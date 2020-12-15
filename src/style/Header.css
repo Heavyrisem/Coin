@@ -1,0 +1,13 @@
+.Header {
+    padding: 1%;
+    width: 100%;
+    height: auto;
+    text-align: center;
+
+    background-color: black;
+    color: white;
+}
+.Header span {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
