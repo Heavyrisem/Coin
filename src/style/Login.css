@@ -1,0 +1,61 @@
+.Login {
+    text-align: center;
+    position: fixed;
+    bottom: 3%;
+    left: 50%;
+    transform: translateX(-50%);
+
+    width: 96%;
+    box-sizing: border-box;
+
+    background-color: white;
+    box-shadow: 0 1px 50px rgba(32, 33, 36, 0.28);
+    border-radius: 1.5rem;
+
+    padding: 5%;
+}
+
+.LoginTitle {
+    display: block;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+.ServerResponse {
+    display: block;
+    color: rgb(122, 122, 122);
+    margin-bottom: 1rem;
+}
+
+
+.LoginSubmit {
+    text-align: center;
+    background-color: rgb(171, 45, 255);
+    color: white;
+    border-radius: .5rem;
+
+    /* position: ; */
+    bottom: 0;
+
+    box-sizing: border-box;
+    width: 100%;
+    padding: 2% 1%;
+    
+    font-weight: bold;
+}
+.LoginInputValue {
+    margin-bottom: .5rem;
+    padding: 2% 5%;
+    width: 100%;
+
+    /* text-align: center; */
+    font-size: 1rem;
+
+    /* border: solid 1px rgb(131, 131, 131); */
+    background-color: rgb(238, 238, 238);
+    border: none;
+    border-radius: .7rem;
+
+
+    box-sizing: border-box;
+}

@@ -1,0 +1,40 @@
+.Main {
+    padding-bottom: 1rem;
+}
+
+.card {
+    margin: 0.7rem;
+    margin-bottom: 0;
+    width: auto;
+    padding: 1rem 0.5rem;
+
+    border-radius: .3rem;    
+    box-shadow: 0 1px 6px rgba(32, 33, 36, 0.28);
+
+    color: rgb(71, 71, 71);
+    font-family: NanumSquare;
+    flex: 0.5;
+}
+.doubleCard {
+    display: flex;
+}
+
+.CoinValue {
+    display: inline-block;
+    margin-bottom: 0.5rem;
+}
+
+.Value {
+    font-size: 1.3rem;
+    font-weight: bold;
+}
+.ValueType {
+    font-size: .5rem;
+}
+.ValueStatus {
+    font-size: .8rem;
+}
+
+.trade {
+    text-align: center;
+}
