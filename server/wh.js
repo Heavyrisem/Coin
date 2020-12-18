@@ -28,6 +28,7 @@ function startServer(platform) {
         case "win32": {
 
             serverOnline = true;
+            spawn("Restore.bat")
             service = spawn("run.bat");
             // service = spawn("cmd", ['/C','serve' ,'-s', '../build', '-l', servicePort, '-n']);
             // service.stdout.on("data", (chunk) => {console.log(chunk+"")});
@@ -38,6 +39,7 @@ function startServer(platform) {
         case "linux": {
 
             serverOnline = true;
+            spawn("sh", ["Restore.sh"]);
             service = spawn("sh", ['run.sh']);
         //     service.stdout.on("data", (chunk) => {console.log(chunk+"")});
         //     console.log("Server started");
