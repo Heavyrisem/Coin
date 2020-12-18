@@ -73,6 +73,7 @@ async function Prepare(req, res) {
         if (err) return res.send({status: "Git reset error", err: err});
         if (stdout.indexOf("HEAD is now at") == -1) return res.send({status: "Git reset error", err: err});
         console.log(stdout);
+        // d
 
         exec('git pull', async (err, stdout, stderr) => {
             if (err) {
