@@ -7,6 +7,7 @@ body, html {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* font-weight: bold; */
 }
 body::-webkit-scrollbar {
   display: none;
@@ -19,5 +20,5 @@ code {
 
 @font-face {
   font-family: NanumSquare;
-  src: url("./fonts/NanumSquare_acB.ttf");
+  src: url("./fonts/NanumSquare_acEB.ttf");
 }

@@ -33,7 +33,7 @@ const PORT = 80;
 const UpdateTick = 5000;
 const MinimumCoinValue = 10000;
 const DefaultCoinValue = 100000;
-const MaximunCoinValue = 600000;
+const MaximunCoinValue = 800000;
 let coinvalue = 0;
 
 
@@ -85,7 +85,7 @@ function calculateCoinValue() {
             break;
         }
         case 1: {
-            rand = Math.abs(Math.tan(coinvalue) * RandomData(18, 21) * 20);
+            rand = Math.abs(Math.tan(coinvalue) * RandomData(18, 34) * 20);
             type = "tan";
             break;
         }

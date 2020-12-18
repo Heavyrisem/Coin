@@ -47,6 +47,22 @@
     margin: 0 1%;
 }
 .InputValue {
+    margin-bottom: .5rem;
+    padding: 5% 1%;
+    width: 100%;
+
+    text-align: center;
+    font-size: 1rem;
+
+    /* border: solid 1px rgb(131, 131, 131); */
+    background-color: rgb(238, 238, 238);
+    border: none;
+    border-radius: .7rem;
+
+
+    box-sizing: border-box;
+}
+/* .InputValue {
     margin: 0;
     padding: 5% 1%;
     width: 100%;
@@ -57,4 +73,4 @@
     border: solid 1px rgb(146, 146, 146);
 
     box-sizing: border-box;
-}
+} */

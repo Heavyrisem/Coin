@@ -100,7 +100,10 @@ class Login extends React.Component {
                         (this.state.ServerResponse == "WRONG_PASSWD")? Passwd :
                         this.state.ServerResponse
                     }</span>
-                    <div className="LoginSubmit" onClick={this.requestLogin.bind(this)}>로그인</div>
+                    <div className="LoginBtns">
+                        <div style={{color: 'rgb(146, 146, 146)', backgroundColor: 'rgb(231, 231, 231)'}} className="LoginSubmit" onClick={e=>{e.stopPropagation();this.setState({register: true, ServerResponse: undefined})}}>계정 생성</div>
+                        <div className="LoginSubmit" onClick={this.requestLogin.bind(this)}>로그인</div>
+                    </div>
                 </div>
             )
         }

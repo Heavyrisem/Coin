@@ -5,7 +5,12 @@ class Header extends React.Component {
     render() {
         return (
             <div className="Header">
-                <span>JG Coin</span>
+                <span className="HeaderTitle">Coin</span>
+                {
+                    this.props.userInfo.userID? 
+                    <span className="LoginBtn">{this.props.userInfo.userID}</span>:
+                    <span className="LoginBtn" onClick={this.props.showLoginPanel}>로그인</span>
+                }
             </div>
         )
     }

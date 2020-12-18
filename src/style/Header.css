@@ -1,14 +1,34 @@
 .Header {
+    display: flex;
     padding: 1%;
     width: 100%;
     height: auto;
-    text-align: center;
+    /* text-align: center; */
     box-sizing: border-box;
 
     background-color: black;
     color: white;
 }
 .Header span {
-    font-size: 1.5rem;
+    align-items: center;
+    font-size: 1.1rem;
     font-weight: bold;
+}
+
+.HeaderTitle {
+    margin: auto;
+}
+
+.LoginBtns {
+    display: flex;
+}
+.LoginBtn {
+    font-size: .9rem!important;
+    text-align: center;
+    cursor: pointer;
+    border-radius: .3rem;
+    margin: 1%;
+    padding: 1% 5%;
+    color: rgb(117, 117, 117);
+    background-color: white;
 }

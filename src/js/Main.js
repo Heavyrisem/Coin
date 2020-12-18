@@ -219,11 +219,11 @@ class Main extends React.Component {
       <div className="Main" onClick={this.hideEverything.bind(this)}>
         {this.state.showTrade&& <Trade userInfo={this.props.userInfo} CoinValue={this.state.lastCoinValue} type={this.state.showTrade} SetBalance={this.props.SetBalance} Close={()=>{this.setState({showTrade: undefined})}} />}
 
-        <div className="doubleCard">
+        {/* <div className="doubleCard">
           <div onClickCapture={this.props.showLoginPanel} className="card" style={{textAlign: 'center', backgroundColor: 'rgb(210, 210, 210)'}}>
             {this.props.userInfo.userID? this.props.userInfo.userID:"로그인해 주세요"} 
           </div>
-        </div>
+        </div> */}
 
         <div className="chart card">
           <span className="CoinValue">
@@ -241,12 +241,12 @@ class Main extends React.Component {
 
         {(this.props.userInfo.userID!=undefined)&&
           (<><div className="doubleCard">
-            <div className="card sell trade" onClickCapture={(e)=>{e.stopPropagation();this.setState({showTrade: "Sell"})}}>
+            <button className="card sell trade" onClickCapture={(e)=>{e.stopPropagation();this.setState({showTrade: "Sell"})}}>
             <i className="fas fa-shopping-cart"></i> 판매
-            </div>
-            <div className="card buy trade" onClickCapture={(e)=>{e.stopPropagation();this.setState({showTrade: "Buy"})}}>
+            </button>
+            <button className="card buy trade" onClickCapture={(e)=>{e.stopPropagation();this.setState({showTrade: "Buy"})}}>
             <i className="fas fa-cart-plus"></i>  구매
-            </div>
+            </button>
           </div>
 
           <div className="card">
