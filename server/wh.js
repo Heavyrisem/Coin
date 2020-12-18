@@ -68,10 +68,11 @@ async function Prepare(req, res) {
         console.log("Branch is Diff", req.body.ref);
         return res.send({status: "Branch is Diff", err: req.body.ref});
     }
-    // exec('git reset --hard HEAD', (err, stdout, stderr) => {
-    //     if (err) return res.send({status: "Git reset error", err: err});
-    //     if (stdout.indexOf("HEAD is now at") == -1) return res.send({status: "Git reset error", err: err});
-    //     console.log(stdout);
+    await stopServer();
+    exec('git reset --hard HEAD', (err, stdout, stderr) => {
+        if (err) return res.send({status: "Git reset error", err: err});
+        if (stdout.indexOf("HEAD is now at") == -1) return res.send({status: "Git reset error", err: err});
+        console.log(stdout);
 
         exec('git pull', async (err, stdout, stderr) => {
             if (err) {
@@ -89,7 +90,6 @@ async function Prepare(req, res) {
                 else console.log(stdout);
     
                 console.log("-------------- Server Restart --------------");
-                await stopServer();
 
                 
             console.log("-------------- Build Start --------------");
@@ -137,7 +137,7 @@ async function Prepare(req, res) {
             }
         });
 
-    // });
+    });
 }
 
 app.post("/wh", async (req, res) => {
