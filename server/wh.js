@@ -55,6 +55,20 @@ async function stopServer() {
         await kill(servicePort, "tcp");
         serverOnline = false;
         console.log("Server Stopping ...");
+        switch(process.platform) {
+            case "win32": {
+                spawn("Backup.bat");
+                break;
+            }
+            case "linux": {
+                spawn("sh", ["Backup.sh"]);
+                break;
+            }
+            default: {
+                return console.log("Not supported Platform");
+            }
+        }
+        console.log("Backup DB")
         resolve();
 
     });
