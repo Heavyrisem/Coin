@@ -60,6 +60,7 @@ async function stopServer() {
     });
 }
 
+
 async function Prepare(req, res) {
     let now = new Date();
     console.log("---------- New Commit has Arrive ----------");
@@ -73,7 +74,7 @@ async function Prepare(req, res) {
         if (err) return res.send({status: "Git reset error", err: err});
         if (stdout.indexOf("HEAD is now at") == -1 && stdout.indexOf("현재") == -1) {return res.send({status: "git reset error", stdout: stdout})};
         console.log(stdout);
-        
+
 
         exec('git pull', async (err, stdout, stderr) => {
             if (err) {
