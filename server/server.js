@@ -136,7 +136,7 @@ function RandomData(min, max) {
 app.get("/", (req, res) => {
     fs.readFile(`../build/index.html`, (err, data) => {
         if (err) {
-            Log.writeLog("System", "CriticalError", "서비스 불가능, index.html 로드중 오류가 발생했습니다.");
+            Log.writeLog("System", "CriticalError", "서비스 불가능, index.html 로드중 오류가 발생했습니다."+err);
             return res.send("서버에 치명적인 오류가 발생했습니다.");
         } else {
             res.writeHead(200, {'Content-Type': 'text/Html'});
