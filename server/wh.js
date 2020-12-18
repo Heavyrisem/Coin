@@ -71,7 +71,7 @@ async function Prepare(req, res) {
     await stopServer();
     exec('git reset --hard HEAD', (err, stdout, stderr) => {
         if (err) return res.send({status: "Git reset error", err: err});
-        if (stdout.indexOf("HEAD is now at") == -1) return res.send({status: "Git reset error", err: err});
+        if (stdout.indexOf("HEAD is now at") == -1) {console.log(stdout);return res.send({status: "Git reset error", err: err})};
         console.log(stdout);
 
         exec('git pull', async (err, stdout, stderr) => {
