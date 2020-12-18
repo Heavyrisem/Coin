@@ -30,4 +30,5 @@ class UnitChangerAPI {
 	}
 }
 
-module.exports = new UnitChangerAPI();
+// module.exports = new UnitChangerAPI();
+export default new UnitChangerAPI();

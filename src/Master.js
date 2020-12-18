@@ -5,11 +5,26 @@ import Header from './js/Header';
 import Main from './js/Main';
 import Login from './js/Login';
 
+import {serverAddress} from './Config.json';
+
 class Master extends React.Component {
     state = {
+        showLoginPanel: false,
         userID: undefined,
-        userCoinValue: 0,
-        userMoneyValue: 0
+        userCoinBalance: 0,
+        userCoinBalance: 0
+    }
+
+    showLoginPanel(e) {
+        e.stopPropagation();
+        this.setState({
+            showLoginPanel: true
+        });
+    }
+    hideLoginPanel() {
+        this.setState({
+            showLoginPanel: false
+        });
     }
 
     onLogin(userID) {
@@ -19,21 +34,35 @@ class Master extends React.Component {
         // cookie
     }
 
+
+
+    async CheckUserStatus() {
+        if (this.userID == undefined) return;
+        let ServerResponse = await fetch(`${serverAddress}/getBalance`, {
+            method: "POST",
+            body: JSON.stringify({
+                name: this.state.userID
+            }),
+            headers: {'Context-type': 'application/json'}
+        });
+        ServerResponse = await ServerResponse.json();
+
+        if (ServerResponse.CoinBalance != undefined) this.SetBalance(ServerResponse.CoinBalance, ServerResponse.MoneyBalance);
+    }
+
     SetBalance(Coin, Money) {
         this.setState({
-            userCoinValue: Coin,
-            userMoneyValue: Money
+            userCoinBalance: parseInt(Coin),
+            userMoneyBalance: parseInt(Money)
         });
     }
 
     render() {
-        if (this.state.userID == undefined) {
-            return (<Login onSuccess={this.onLogin.bind(this)} SetBalance={this.SetBalance.bind(this)}/>);
-        }
         return (
             <div className="Master">
+                {(this.state.userID==undefined&&this.state.showLoginPanel)&& <Login show={this.showLoginPanel.bind(this)} hide={this.hideLoginPanel.bind()} onSuccess={this.onLogin.bind(this)} SetBalance={this.SetBalance.bind(this)}/>}
                 <Header userInfo={this.state}/>
-                <Main userInfo={this.state} SetBalance={this.SetBalance.bind(this)}/>
+                <Main showLoginPanel={this.showLoginPanel.bind(this)} hideLoginPanel={this.hideLoginPanel.bind(this)} userInfo={this.state} SetBalance={this.SetBalance.bind(this)}/>
             </div>
         )
     }

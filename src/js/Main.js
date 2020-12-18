@@ -9,6 +9,7 @@ import CountUp from 'react-countup';
 
 import io from 'socket.io-client';
 
+import {serverAddress} from '../Config.json';
 
 class Main extends React.Component {
   state = {
@@ -77,18 +78,23 @@ class Main extends React.Component {
     lastCoinValue: 0,
     CoinValueStatus: 0,
     type: undefined,
-    showTrade: false
+    showTrade: false,
+    wiseSaying: {
+        Message: undefined,
+        Author: undefined
+    }
   }
 
   componentDidMount() {
     this.connectSocket();
     this.drawChart();
     this.nextUpdateTimer();
+    this.GetWiseSaying();
   }
 
   connectSocket() {
 
-    this.state.serverSocket = io.connect("http://192.168.1.71:3002");
+    this.state.serverSocket = io.connect(`${serverAddress}`);
     this.state.serverSocket.on("CoinValue", (data) => {
       this.pushData(data);
       this.setState({
@@ -177,17 +183,45 @@ class Main extends React.Component {
     }
   }
 
+  hideEverything() {
+    this.props.hideLoginPanel();
+    this.setState({
+      showTrade: false
+    })
+  }
+
+  async GetWiseSaying() {
+    let ServerResponse = await fetch(`${serverAddress}/getWise`, {
+      method: 'POST'
+    });
+    ServerResponse = await ServerResponse.json();
+
+    if (ServerResponse.Author != undefined) {
+      this.setState({
+        wiseSaying: {
+          Author: ServerResponse.Author,
+          Message: ServerResponse.Message
+        }
+      })
+    } else {
+      console.log(ServerResponse);
+      this.setState({
+        wiseSaying: {
+          Author: undefined,
+          Message: "데이터 요청에 실패하였습니다."
+        }
+      })
+    }
+  }
+
   render() {
     return (
-      <div className="Main" onClick={()=>{this.setState({showTrade: false})}}>
-        {this.state.showTrade&& <Trade CoinValue={this.state.lastCoinValue} type={this.state.showTrade} close={()=>{this.setState({showTrade: undefined})}} />}
+      <div className="Main" onClick={this.hideEverything.bind(this)}>
+        {this.state.showTrade&& <Trade userInfo={this.props.userInfo} CoinValue={this.state.lastCoinValue} type={this.state.showTrade} SetBalance={this.props.SetBalance} Close={()=>{this.setState({showTrade: undefined})}} />}
 
         <div className="doubleCard">
-          <div className="card" style={{textAlign: 'center'}}>
-            {this.props.userInfo.userID} 
-          </div>
-          <div className="card" style={{textAlign: 'center'}}>
-            로그아웃
+          <div onClickCapture={this.props.showLoginPanel} className="card" style={{textAlign: 'center', backgroundColor: 'rgb(210, 210, 210)'}}>
+            {this.props.userInfo.userID? this.props.userInfo.userID:"로그인해 주세요"} 
           </div>
         </div>
 
@@ -197,7 +231,7 @@ class Main extends React.Component {
             <span className="ValueType">KRW </span>
             <span className="ValueStatus" style={this.getValueStatus()}>
             {(this.state.CoinValueStatus > 0 && this.state.CoinValueStatus)&& "+"}{this.state.CoinValueStatus}
-            ({(this.state.CoinValueStatus!=0)? (Math.abs(this.state.CoinValueStatus)/this.state.lastCoinValue * 100).toFixed(2)+"%": "Loading"})
+            ({(this.state.CoinValueStatus!=0)? (Math.abs(this.state.CoinValueStatus)/this.state.lastCoinValue * 100).toFixed(2)+"%" : "Loading"}) {(this.state.CoinValueStatus > 0)? <i className="fas fa-caret-up"></i>: <i className="fas fa-caret-down"></i>}
             </span>
           </span>
           <div>
@@ -205,24 +239,31 @@ class Main extends React.Component {
           </div>
         </div>
 
-        <div className="doubleCard">
-          <div className="card sell trade" onClickCapture={(e)=>{e.stopPropagation();this.setState({showTrade: "Sell"})}}>
-            판매
+        {(this.props.userInfo.userID!=undefined)&&
+          (<><div className="doubleCard">
+            <div className="card sell trade" onClickCapture={(e)=>{e.stopPropagation();this.setState({showTrade: "Sell"})}}>
+            <i className="fas fa-shopping-cart"></i> 판매
+            </div>
+            <div className="card buy trade" onClickCapture={(e)=>{e.stopPropagation();this.setState({showTrade: "Buy"})}}>
+            <i className="fas fa-cart-plus"></i>  구매
+            </div>
           </div>
-          <div className="card buy trade" onClickCapture={(e)=>{e.stopPropagation();this.setState({showTrade: "Buy"})}}>
-            구매
-          </div>
-        </div>
+
+          <div className="card">
+              <span>
+                내 코인: {(this.props.userInfo.userCoinBalance!=undefined)? unit.Comma(this.props.userInfo.userCoinBalance)+" JG": "로그인해 주세요"}
+              </span>
+          </div>          
+          <div className="card">
+            <span>
+              내 화폐: {(this.props.userInfo.userMoneyBalance!=undefined)? unit.Comma(this.props.userInfo.userMoneyBalance)+" KRW": "로그인해 주세요"}
+            </span>
+          </div></>)
+        }
 
         <div className="card">
-            <span>
-              내 코인: {(this.props.userInfo.userCoinValue!=undefined)? unit.Comma(this.props.userInfo.userCoinValue)+" JG": "로그인해 주세요"}
-            </span>
-        </div>          
-        <div className="card">
-          <span>
-            내 화폐: {(this.props.userInfo.userMoneyValue!=undefined)? unit.Comma(this.props.userInfo.userMoneyValue)+" KRW": "로그인해 주세요"}
-          </span>
+          <div className="Say">"{this.state.wiseSaying.Message}"</div>
+          <div className="Say Who">- {this.state.wiseSaying.Author}</div>
         </div>
         
       </div>

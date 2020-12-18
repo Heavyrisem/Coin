@@ -1,6 +1,8 @@
 import React from 'react';
 import '../style/Login.css';
 
+import {serverAddress} from '../Config.json';
+
 class Login extends React.Component {
     state = {
         ServerResponse: undefined,
@@ -8,7 +10,7 @@ class Login extends React.Component {
     }
 
     async requestLogin() {
-        let ServerResponse = await fetch("http://192.168.1.71:3002/login", {
+        let ServerResponse = await fetch(`${serverAddress}/login`, {
             method: "POST",
             body: JSON.stringify({
                     id: this.id.value,

@@ -17,6 +17,8 @@
 }
 .doubleCard {
     display: flex;
+    /* width: 90%; */
+    margin: auto;
 }
 
 .CoinValue {
@@ -37,4 +39,26 @@
 
 .trade {
     text-align: center;
+}
+
+
+
+
+
+
+
+.Say {
+    /* text-align: center; */
+    
+    word-break:keep-all;
+    box-sizing: border-box;
+    padding: 1%;
+    line-height: 1.5rem;
+    font-weight: bold;
+    font-style: italic;
+    color: rgb(179, 179, 179);
+}
+.Who {
+    text-align: end;
+    margin-right: 1rem;
 }
