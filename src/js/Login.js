@@ -36,7 +36,7 @@ class Login extends React.Component {
 
     async requestRegister() {
         if (!this.id.value || !this.passwd.value) return this.setState({ServerResponse: "아이디와 비밀번호는 공백일 수 없습니다."});
-        let ServerResponse = await fetch("http://192.168.1.71:3002/register", {
+        let ServerResponse = await fetch(`${serverAddress}/register`, {
             method: "POST",
             body: JSON.stringify({
                 id: this.id.value,
