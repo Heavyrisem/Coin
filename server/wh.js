@@ -41,7 +41,7 @@ function startServer(platform) {
             serverOnline = true;
             spawn("sh", ["Restore.sh"]);
             service = spawn("sh", ['run.sh']);
-        //     service.stdout.on("data", (chunk) => {console.log(chunk+"")});d
+        //     service.stdout.on("data", (chunk) => {console.log(chunk+"")});
         //     console.log("Server started");
             console.log("Server is Online !");
             break;
