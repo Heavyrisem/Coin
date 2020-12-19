@@ -1,6 +1,6 @@
 const fetch = require("node-fetch");
 const URL = "http://heavyrisem.kro.kr/getLog";
-const KEY = "COIN";
+const KEY = "HEAVYRISEM";
 
 function ParseDate(date) {
     let d = new Date(date);
@@ -17,9 +17,8 @@ async function getServerResponse(URL) {
     });
     ServerResponse = await ServerResponse.json();
 
-
     ServerResponse.forEach(value => {
-        // if (value.Type != "Trade") return;
+        if (value.Author == "Admin" || value.Type == "SetValue") return;
         console.log(`[${ParseDate(value.Date)}] [${value.Type}] [${value.Author}] ${value.Message}`);
     })
 }
