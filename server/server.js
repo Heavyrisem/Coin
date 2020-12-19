@@ -86,12 +86,12 @@ function calculateCoinValue() {
     // rand = DefaultCoinValue RandomData()
     switch (RandomData(0, 2)) {
         case 0: {
-            rand = Math.abs(Math.sin(coinvalue) * RandomData(40, 81) * 35);
+            rand = Math.abs(Math.sin(coinvalue) * RandomData(40, 81) * 100);
             type = "sin";
             break;
         }
         case 1: {
-            rand = Math.abs(Math.tan(coinvalue) * RandomData(30, 51) * 35);
+            rand = Math.abs(Math.tan(coinvalue) * RandomData(30, 51) * 100);
             type = "tan";
             break;
         }
@@ -154,7 +154,7 @@ app.get("/", (req, res) => {
 
 app.post("/login", (req, res) => {
     if (!req.body.passwd || !req.body.id) {
-        Log.writeLog("System", "Information", "빈 데이터로 로그인 시도 " + req.headers['x-forwarded-for'] || req.connection.remoteAddress);
+        Log.writeLog("System", "Login", "빈 데이터로 로그인 시도 " + req.headers['x-forwarded-for'] || req.connection.remoteAddress);
         return res.send({ msg: "WRONG_DATA" });
     }
     DB.query(`SELECT * FROM userinfo WHERE name='${req.body.id}'`, (err, row) => {
@@ -164,13 +164,13 @@ app.post("/login", (req, res) => {
         if (row) {
             if (row.passwd == SHA256(req.body.passwd)) {
                 res.send({ id: row.name, CoinBalance: row.CoinBalance, MoneyBalance: row.MoneyBalance });
-                Log.writeLog("System", "Information", `${row.name} 사용자 로그인 성공 ${req.headers['x-forwarded-for'] || req.connection.remoteAddress}`);
+                Log.writeLog("System", "Login", `${row.name} 사용자 로그인 성공 ${req.headers['x-forwarded-for'] || req.connection.remoteAddress}`);
             } else {
-                Log.writeLog("System", "Information", `${req.body.id} 비밀번호 불일치 ${req.headers['x-forwarded-for'] || req.connection.remoteAddress}`);
+                Log.writeLog("System", "Login", `${req.body.id} 비밀번호 불일치 ${req.headers['x-forwarded-for'] || req.connection.remoteAddress}`);
                 res.send({ msg: "WRONG_PASSWD" });
             }
         } else {
-            Log.writeLog("System", "Information", `${req.body.id} 로그인 실패 ${req.headers['x-forwarded-for'] || req.connection.remoteAddress}`);
+            Log.writeLog("System", "Login", `${req.body.id} 로그인 실패 ${req.headers['x-forwarded-for'] || req.connection.remoteAddress}`);
             res.send({ msg: "NO_USER" });
         }
     })
@@ -178,7 +178,7 @@ app.post("/login", (req, res) => {
 
 app.post("/register", (req, res) => {
     if (!req.body.passwd || !req.body.id) {
-        Log.writeLog("System", "Information", "빈 데이터로 회원가입 시도 " + req.headers['x-forwarded-for'] || req.connection.remoteAddress);
+        Log.writeLog("System", "Register", "빈 데이터로 회원가입 시도 " + req.headers['x-forwarded-for'] || req.connection.remoteAddress);
         return res.send({ msg: "WRONG_DATA" });
     }
     DB.query(`SELECT * FROM userinfo WHERE name='${req.body.id}'`, (err, row) => {
@@ -186,12 +186,12 @@ app.post("/register", (req, res) => {
         if (row.length == 0) row = undefined;
         else row = row[0];
         if (row) {
-            Log.writeLog("System", "Information", `${row.name} 사용자 중복 회원가입 시도 ${req.headers['x-forwarded-for'] || req.connection.remoteAddress}`);
+            Log.writeLog("System", "Register", `${row.name} 사용자 중복 회원가입 시도 ${req.headers['x-forwarded-for'] || req.connection.remoteAddress}`);
             return res.send({ msg: "USER_EXISTS" });
         } else {
             DB.query(`INSERT INTO userinfo(name, passwd, CoinBalance, MoneyBalance) VALUES("${req.body.id}", "${SHA256(req.body.passwd)}", "100", "300000")`, (err, row) => {
                 if (err)  { res.send({msg: "데이터베이스 조회 오류"}); return Log.writeLog(req.body.id, "Error", "데이터베이스 조회 오류" + err) }
-                Log.writeLog("System", "Information", `${req.body.id} 회원가입 성공 ${req.headers['x-forwarded-for'] || req.connection.remoteAddress}`);
+                Log.writeLog("System", "Register", `${req.body.id} 회원가입 성공 ${req.headers['x-forwarded-for'] || req.connection.remoteAddress}`);
                 return res.send({ id: req.body.id });
             })
         }
@@ -291,7 +291,7 @@ app.post("/wise", (req, res) => {
 
 app.post("/setValue", (req, res) => {
     req.body.value = parseInt(req.body.value);
-    if (!(req.body.key == "COIN") || isNaN(req.body.value)) {
+    if (!(req.body.key == Config.key) || isNaN(req.body.value)) {
         res.send({msg: "You are not admin"});
         Log.writeLog("Admin", "NotPremitted", `잘못된 접근 ${req.headers['x-forwarded-for'] || req.connection.remoteAddress}`);
         return;
@@ -302,7 +302,7 @@ app.post("/setValue", (req, res) => {
 })
 
 app.post("/getLog", (req, res) => {
-    if (!(req.body.key == "COIN")) {
+    if (!(req.body.key == Config.key)) {
         res.send({msg: "You are not admin"});
         Log.writeLog("Admin", "NotPremitted", `잘못된 접근 ${req.headers['x-forwarded-for'] || req.connection.remoteAddress}`);
         return;

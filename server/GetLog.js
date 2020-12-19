@@ -19,6 +19,7 @@ async function getServerResponse(URL) {
 
 
     ServerResponse.forEach(value => {
+        // if (value.Type != "Trade") return;
         console.log(`[${ParseDate(value.Date)}] [${value.Type}] [${value.Author}] ${value.Message}`);
     })
 }
