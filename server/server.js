@@ -14,7 +14,7 @@ const fs = require('fs');
 const Log = require('./log');
 
 const sqlite3 = require('sqlite3').verbose();
-const DB = new sqlite3.Database('./DB.db', sqlite3.OPEN_READWRITE, err => {
+const DB = new sqlite3.Database('./BackupDB/DB.db', sqlite3.OPEN_READWRITE, err => {
     if (err) {
         console.log(`Error while Opening DB ${err}`);
     } else {
@@ -152,7 +152,7 @@ app.post("/login", (req, res) => {
         return res.send({ msg: "WRONG_DATA" });
     }
     DB.get(`SELECT * FROM userinfo WHERE name='${req.body.id}'`, (err, row) => {
-        if (err) { return Log.writeLog("System", "Error", "데이터베이스 조회 오류" + err) }
+        if (err)  { res.send({msg: "데이터베이스 조회 오류"}); return Log.writeLog(req.body.id, "Error", "데이터베이스 조회 오류" + err) }
         if (row) {
             if (row.passwd == SHA256(req.body.passwd)) {
                 res.send({ id: row.name, CoinBalance: row.CoinBalance, MoneyBalance: row.MoneyBalance });
@@ -174,13 +174,13 @@ app.post("/register", (req, res) => {
         return res.send({ msg: "WRONG_DATA" });
     }
     DB.get(`SELECT * FROM userinfo WHERE name='${req.body.id}'`, (err, row) => {
-        if (err) { return Log.writeLog("System", "Error", "데이터베이스 조회 오류" + err) }
+        if (err)  { res.send({msg: "데이터베이스 조회 오류"}); return Log.writeLog(req.body.id, "Error", "데이터베이스 조회 오류" + err) }
         if (row) {
             Log.writeLog("System", "Information", `${row.name} 사용자 중복 회원가입 시도 ${req.headers['x-forwarded-for'] || req.connection.remoteAddress}`);
             return res.send({ msg: "USER_EXISTS" });
         } else {
             DB.run(`INSERT INTO userinfo(name, passwd, CoinBalance, MoneyBalance) VALUES("${req.body.id}", "${SHA256(req.body.passwd)}", "100", "300000")`, (err, row) => {
-                if (err) { return Log.writeLog("System", "Error", "데이터베이스 조회 오류" + err) }
+                if (err)  { res.send({msg: "데이터베이스 조회 오류"}); return Log.writeLog(req.body.id, "Error", "데이터베이스 조회 오류" + err) }
                 Log.writeLog("System", "Information", `${req.body.id} 회원가입 성공 ${req.headers['x-forwarded-for'] || req.connection.remoteAddress}`);
                 return res.send({ id: req.body.id });
             })
@@ -194,13 +194,14 @@ app.post("/buy", (req, res) => {
         return res.send({ msg: "WRONG_DATA" });
     }
     DB.get(`SELECT * FROM userinfo WHERE name='${req.body.id}'`, (err, row) => {
-        if (err) { return Log.writeLog(req.body.id, "Error", "데이터베이스 조회 오류" + err) }
+        if (err)  { res.send({msg: "데이터베이스 조회 오류"}); return Log.writeLog(req.body.id, "Error", "데이터베이스 조회 오류" + err) }
+        
         if (row) {
 
             let preCal = parseInt(coinvalue) * parseInt(req.body.Amount);
             if (parseInt(row.MoneyBalance) >= preCal) {
                 DB.run(`UPDATE userinfo SET MoneyBalance=${parseInt(row.MoneyBalance) - preCal}, CoinBalance=${parseInt(row.CoinBalance) + parseInt(req.body.Amount)} WHERE name='${req.body.id}'`, err => {
-                    if (err) { return Log.writeLog(req.body.id, "Error", "데이터베이스 조회 오류" + err) }
+                    if (err)  { res.send({msg: "데이터베이스 조회 오류"}); return Log.writeLog(req.body.id, "Error", "데이터베이스 조회 오류" + err) }
 
                     Log.writeLog(req.body.id, "Trade", `${row.name} ${req.body.Amount} 코인 구매, 잔액 ${parseInt(row.CoinBalance) + parseInt(req.body.Amount)}`);
                     return res.send({ CoinBalance: parseInt(row.CoinBalance) + parseInt(req.body.Amount), MoneyBalance: parseInt(row.MoneyBalance) - preCal });
@@ -224,14 +225,14 @@ app.post("/sell", (req, res) => {
         return res.send({ msg: "WRONG_DATA" });
     }
     DB.get(`SELECT * FROM userinfo WHERE name='${req.body.id}'`, (err, row) => {
-        if (err) { return Log.writeLog(req.body.id, "Error", "데이터베이스 조회 오류" + err) }
+        if (err)  { res.send({msg: "데이터베이스 조회 오류"}); return Log.writeLog(req.body.id, "Error", "데이터베이스 조회 오류" + err) }
         if (row) {
 
             let preCal = coinvalue * req.body.Amount;
 
             if (parseInt(row.CoinBalance) >= parseInt(req.body.Amount)) {
                 DB.run(`UPDATE userinfo SET MoneyBalance=${parseInt(row.MoneyBalance) + preCal}, CoinBalance=${parseInt(row.CoinBalance) - parseInt(req.body.Amount)} WHERE name='${req.body.id}'`, err => {
-                    if (err) { return Log.writeLog(req.body.id, "Error", "데이터베이스 조회 오류" + err) }
+                    if (err)  { res.send({msg: "데이터베이스 조회 오류"}); return Log.writeLog(req.body.id, "Error", "데이터베이스 조회 오류" + err) }
                     Log.writeLog(req.body.id, "Trade", `${row.name} ${req.body.Amount} 코인 판매, 잔액 ${parseInt(row.MoneyBalance) + preCal}`);
                     return res.send({ CoinBalance: parseInt(row.CoinBalance) - parseInt(req.body.Amount), MoneyBalance: parseInt(row.MoneyBalance) + preCal });
                 });
@@ -284,6 +285,19 @@ app.post("/setValue", (req, res) => {
     Log.writeLog("Admin", "SetValue", "Set Coinvalue to " + req.body.value);
     coinvalue = req.body.value;
     res.send({value: coinvalue});
+})
+
+app.post("/getLog", (req, res) => {
+    if (!(req.body.key == "COIN")) {
+        res.send({msg: "You are not admin"});
+        Log.writeLog("Admin", "NotPremitted", `잘못된 접근 ${req.headers['x-forwarded-for'] || req.connection.remoteAddress}`);
+        return;
+    }
+    Log.writeLog("Admin", "GetLog", `로그 조회 ${req.headers['x-forwarded-for'] || req.connection.remoteAddress}`);
+    DB.all(`SELECT * FROM Log`, (err, rows) => {
+        if (err)  { res.send({msg: "데이터베이스 조회 오류"}); return Log.writeLog(req.body.id, "Error", "데이터베이스 조회 오류" + err) }
+        res.send(rows);
+    })
 })
 
 server.listen(PORT, () => {
