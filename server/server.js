@@ -61,7 +61,7 @@ io.on("connection", client => {
         for (let i = 5; i > 0; i--) {
             if (!i||!rows[rows.length-1-i]) break;
             let date = new Date(rows[rows.length-1-i].date);
-            io.emit("CoinValue", { coinValue: rows[rows.length-1-i].value, updateTime: `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`, nextUpdate: UpdateTick, type: "none" });
+            client.emit("CoinValue", { coinValue: rows[rows.length-1-i].value, updateTime: `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`, nextUpdate: UpdateTick, type: "none" });
             // console.log(rows[rows.length-1-i]);
         }
     })
@@ -86,12 +86,12 @@ function calculateCoinValue() {
     // rand = DefaultCoinValue RandomData()
     switch (RandomData(0, 2)) {
         case 0: {
-            rand = Math.abs(Math.sin(coinvalue) * RandomData(40, 150) * 80);
+            rand = Math.abs(Math.sin(coinvalue) * RandomData(40, 70) * 25);
             type = "sin";
             break;
         }
         case 1: {
-            rand = Math.abs(Math.tan(coinvalue) * RandomData(30, 100) * 80);
+            rand = Math.abs(Math.tan(coinvalue) * RandomData(30, 80) * 25);
             type = "tan";
             break;
         }
@@ -110,7 +110,7 @@ function calculateCoinValue() {
         else { rand *= 1.3; console.log("상승률 130% 증가") } // 1/3 미만일 경우 130% 증가
         if (coinvalue <= DefaultCoinValue) { rand *= 5; console.log("상승율 500% 증가") } //기본가격보다 낮을때 30% 추가
         if (coinvalue >= MaximunCoinValue - MaximunCoinValue / 3) { rand *= 0.7; console.log("상승율 30% 감소") } // 상한선의 2/3 이상일때 70% 증가
-        rand *= 1.2;
+        // rand *= 1;
         //  {rand *= 1.5;console.log("상승율 150% 증가")} //상한선의 1/3 이하일때, 20% 추가후 증가
     }
 
