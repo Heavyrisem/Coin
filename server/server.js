@@ -80,12 +80,12 @@ function calculateCoinValue(value) {
     // rand = DefaultCoinValue RandomData()
     switch (RandomData(0, 2)) {
         case 0: {
-            rand = Math.abs(Math.sin(coinvalue) * RandomData(23, 51) * 20);
+            rand = Math.abs(Math.sin(coinvalue) * RandomData(23, 81) * 20);
             type = "sin";
             break;
         }
         case 1: {
-            rand = Math.abs(Math.tan(coinvalue) * RandomData(18, 34) * 20);
+            rand = Math.abs(Math.tan(coinvalue) * RandomData(18, 51) * 20);
             type = "tan";
             break;
         }
@@ -275,13 +275,14 @@ app.post("/wise", (req, res) => {
 
 app.post("/setValue", (req, res) => {
     req.body.value = parseInt(req.body.value);
-    if (!req.body.value || !req.body.key == "COIN" || isNaN(req.body.value)) {
+    if (!(req.body.key == "COIN") || isNaN(req.body.value)) {
         res.send({msg: "You are not admin"});
         Log.writeLog("Admin", "NotPremitted", `잘못된 접근 ${req.headers['x-forwarded-for'] || req.connection.remoteAddress}`);
         return;
     }
     Log.writeLog("Admin", "SetValue", "Set Coinvalue to " + req.body.value);
     coinvalue = req.body.value;
+    res.send({value: coinvalue});
 })
 
 server.listen(PORT, () => {
