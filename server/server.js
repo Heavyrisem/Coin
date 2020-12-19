@@ -33,7 +33,7 @@ const PORT = 80;
 const UpdateTick = 5000;
 const MinimumCoinValue = 10000;
 const DefaultCoinValue = 100000;
-const MaximunCoinValue = 800000;
+const MaximunCoinValue = 1000000;
 let coinvalue = 0;
 
 
