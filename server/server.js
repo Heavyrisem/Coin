@@ -101,7 +101,7 @@ function calculateCoinValue() {
     if (!nextDir) {
         if (coinvalue >= MaximunCoinValue / 3) { rand *= 1; } // 상한선의 1/3 이상일때, 100% 감소
         else { rand *= 0.7; console.log("하락율 30% 감소") } // 1/3 미만일 경우 30% 감소
-        if (coinvalue >= MaximunCoinValue - MaximunCoinValue / 3) { rand *= 3.0; console.log("하락율 300% 증가") } // 상한선의 2/3 이상일때 130%감소
+        if (coinvalue >= MaximunCoinValue - MaximunCoinValue / 4) { rand *= 3.0; console.log("하락율 300% 증가") } // 상한선의 2/3 이상일때 130%감소
         if (coinvalue <= DefaultCoinValue) { rand = rand * 0.1; console.log("하락율 900% 감소") }
         //  {rand *= 0.5;console.log("하락율 50% 감소")} //상한선의 1/3 이하일때, 50% 감소후 하락
         rand *= -1;
@@ -215,11 +215,11 @@ app.post("/buy", (req, res) => {
                 DB.query(`UPDATE userinfo SET MoneyBalance=${parseInt(row.MoneyBalance) - preCal}, CoinBalance=${parseInt(row.CoinBalance) + parseInt(req.body.Amount)} WHERE name='${req.body.id}'`, err => {
                     if (err)  { res.send({msg: "데이터베이스 조회 오류"}); return Log.writeLog(req.body.id, "Error", "데이터베이스 조회 오류" + err) }
 
-                    Log.writeLog(req.body.id, "Trade", `${row.name} ${req.body.Amount} 코인 구매, 잔액 ${parseInt(row.CoinBalance) + parseInt(req.body.Amount)}`);
+                    Log.writeLog(req.body.id, "Trade", `${req.body.Amount} 코인 구매, 잔액 ${parseInt(row.CoinBalance) + parseInt(req.body.Amount)}`);
                     return res.send({ CoinBalance: parseInt(row.CoinBalance) + parseInt(req.body.Amount), MoneyBalance: parseInt(row.MoneyBalance) - preCal });
                 });
             } else {
-                Log.writeLog(req.body.id, "Trade", `${row.name} 코인 구매 실패, 잔액부족`);
+                Log.writeLog(req.body.id, "Trade", `코인 구매 실패, 잔액부족`);
                 return res.send({ msg: "MONEY_NOT_ENOUGH" });
             }
 
@@ -247,11 +247,11 @@ app.post("/sell", (req, res) => {
             if (parseInt(row.CoinBalance) >= parseInt(req.body.Amount)) {
                 DB.query(`UPDATE userinfo SET MoneyBalance=${parseInt(row.MoneyBalance) + preCal}, CoinBalance=${parseInt(row.CoinBalance) - parseInt(req.body.Amount)} WHERE name='${req.body.id}'`, err => {
                     if (err)  { res.send({msg: "데이터베이스 조회 오류"}); return Log.writeLog(req.body.id, "Error", "데이터베이스 조회 오류" + err) }
-                    Log.writeLog(req.body.id, "Trade", `${row.name} ${req.body.Amount} 코인 판매, 잔액 ${parseInt(row.MoneyBalance) + preCal}`);
+                    Log.writeLog(req.body.id, "Trade", `${req.body.Amount} 코인 판매, 잔액 ${parseInt(row.MoneyBalance) + preCal}`);
                     return res.send({ CoinBalance: parseInt(row.CoinBalance) - parseInt(req.body.Amount), MoneyBalance: parseInt(row.MoneyBalance) + preCal });
                 });
             } else {
-                Log.writeLog(req.body.id, "Trade", `${row.name} 코인 판매 실패, 코인 부족`);
+                Log.writeLog(req.body.id, "Trade", `코인 판매 실패, 코인 부족`);
                 return res.send({ msg: "COIN_NOT_ENOUGH" });
             }
 
