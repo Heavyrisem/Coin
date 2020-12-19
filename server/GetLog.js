@@ -1,5 +1,5 @@
 const fetch = require("node-fetch");
-const URL = "http://localhost/getLog";
+const URL = "http://heavyrisem.kro.kr/getLog";
 const KEY = "COIN";
 
 function ParseDate(date) {

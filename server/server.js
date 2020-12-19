@@ -75,7 +75,7 @@ io.on("connection", client => {
 
 });
 
-function calculateCoinValue(value) {
+function calculateCoinValue() {
     let now = new Date();
     let rand = 0;
     let type;
@@ -86,12 +86,12 @@ function calculateCoinValue(value) {
     // rand = DefaultCoinValue RandomData()
     switch (RandomData(0, 2)) {
         case 0: {
-            rand = Math.abs(Math.sin(coinvalue) * RandomData(40, 81) * 20);
+            rand = Math.abs(Math.sin(coinvalue) * RandomData(40, 81) * 35);
             type = "sin";
             break;
         }
         case 1: {
-            rand = Math.abs(Math.tan(coinvalue) * RandomData(30, 51) * 20);
+            rand = Math.abs(Math.tan(coinvalue) * RandomData(30, 51) * 35);
             type = "tan";
             break;
         }
