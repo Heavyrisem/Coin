@@ -104,6 +104,7 @@ function calculateCoinValue(value) {
         else { rand *= 1.3; console.log("상승률 130% 증가") } // 1/3 미만일 경우 130% 증가
         if (coinvalue <= DefaultCoinValue) { rand *= 5; console.log("상승율 500% 증가") } //기본가격보다 낮을때 30% 추가
         if (coinvalue >= MaximunCoinValue - MaximunCoinValue / 3) { rand *= 0.7; console.log("상승율 30% 감소") } // 상한선의 2/3 이상일때 70% 증가
+        rand *= 1.3;
         //  {rand *= 1.5;console.log("상승율 150% 증가")} //상한선의 1/3 이하일때, 20% 추가후 증가
     }
 
