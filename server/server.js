@@ -69,7 +69,7 @@ io.on("connection", client => {
 
 });
 
-function calculateCoinValue() {
+function calculateCoinValue(value) {
     let now = new Date();
     let rand = 0;
     let type;
@@ -269,6 +269,19 @@ app.post("/wise", (req, res) => {
         });
         res.send("OK");
     })
+})
+
+// Admin Panel
+
+app.post("/setValue", (req, res) => {
+    req.body.value = parseInt(req.body.value);
+    if (!req.body.value || !req.body.key == "COIN" || isNaN(req.body.value)) {
+        res.send({msg: "You are not admin"});
+        Log.writeLog("Admin", "NotPremitted", `잘못된 접근 ${req.headers['x-forwarded-for'] || req.connection.remoteAddress}`);
+        return;
+    }
+    Log.writeLog("Admin", "SetValue", "Set Coinvalue to " + req.body.value);
+    coinvalue = req.body.value;
 })
 
 server.listen(PORT, () => {
