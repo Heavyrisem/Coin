@@ -110,7 +110,7 @@ function calculateCoinValue() {
         else { rand *= 1.3; console.log("상승률 130% 증가") } // 1/3 미만일 경우 130% 증가
         if (coinvalue <= DefaultCoinValue) { rand *= 5; console.log("상승율 500% 증가") } //기본가격보다 낮을때 30% 추가
         if (coinvalue >= MaximunCoinValue - MaximunCoinValue / 3) { rand *= 0.7; console.log("상승율 30% 감소") } // 상한선의 2/3 이상일때 70% 증가
-        rand *= 1.9;
+        rand *= 1.2;
         //  {rand *= 1.5;console.log("상승율 150% 증가")} //상한선의 1/3 이하일때, 20% 추가후 증가
     }
 
@@ -189,7 +189,7 @@ app.post("/register", (req, res) => {
             Log.writeLog("System", "Register", `${row.name} 사용자 중복 회원가입 시도 ${req.headers['x-forwarded-for'] || req.connection.remoteAddress}`);
             return res.send({ msg: "USER_EXISTS" });
         } else {
-            DB.query(`INSERT INTO userinfo(name, passwd, CoinBalance, MoneyBalance) VALUES("${req.body.id}", "${SHA256(req.body.passwd)}", "100", "300000")`, (err, row) => {
+            DB.query(`INSERT INTO userinfo(name, passwd, CoinBalance, MoneyBalance) VALUES("${req.body.id}", "${SHA256(req.body.passwd)}", "10", "300000")`, (err, row) => {
                 if (err)  { res.send({msg: "데이터베이스 조회 오류"}); return Log.writeLog(req.body.id, "Error", "데이터베이스 조회 오류" + err) }
                 Log.writeLog("System", "Register", `${req.body.id} 회원가입 성공 ${req.headers['x-forwarded-for'] || req.connection.remoteAddress}`);
                 return res.send({ id: req.body.id });
@@ -215,7 +215,7 @@ app.post("/buy", (req, res) => {
                 DB.query(`UPDATE userinfo SET MoneyBalance=${parseInt(row.MoneyBalance) - preCal}, CoinBalance=${parseInt(row.CoinBalance) + parseInt(req.body.Amount)} WHERE name='${req.body.id}'`, err => {
                     if (err)  { res.send({msg: "데이터베이스 조회 오류"}); return Log.writeLog(req.body.id, "Error", "데이터베이스 조회 오류" + err) }
 
-                    Log.writeLog(req.body.id, "Trade", `${req.body.Amount} 코인 구매, 잔액 ${parseInt(row.CoinBalance) + parseInt(req.body.Amount)}`);
+                    Log.writeLog(req.body.id, "Trade", `${req.body.Amount} 코인 구매, ${parseInt(row.CoinBalance) + parseInt(req.body.Amount)} JG, ${parseInt(row.MoneyBalance) - preCal} KRW, ${coinvalue}`);
                     return res.send({ CoinBalance: parseInt(row.CoinBalance) + parseInt(req.body.Amount), MoneyBalance: parseInt(row.MoneyBalance) - preCal });
                 });
             } else {
@@ -296,7 +296,7 @@ app.post("/setValue", (req, res) => {
         Log.writeLog("Admin", "NotPremitted", `잘못된 접근 ${req.headers['x-forwarded-for'] || req.connection.remoteAddress}`);
         return;
     }
-    Log.writeLog("Admin", "SetValue", "Set Coinvalue to " + req.body.value);
+    Log.writeLog("Admin", "SetValue", "Set Coinvalue to " + req.body.value + " " + req.headers['x-forwarded-for'] || req.connection.remoteAddress);
     coinvalue = req.body.value;
     res.send({value: coinvalue});
 })
