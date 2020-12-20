@@ -79,7 +79,7 @@ function calculateCoinValue() {
     // rand = DefaultCoinValue RandomData()
     switch (RandomData(0, 2)) {
         case 0: {
-            rand = Math.abs(Math.sin(coinvalue) * RandomData(40, 50) * 30);
+            rand = Math.abs(Math.sin(coinvalue) * RandomData(40, 65) * 30);
             type = "sin";
             break;
         }
