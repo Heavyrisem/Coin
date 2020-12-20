@@ -69,6 +69,7 @@ io.on("connection", client => {
 });
 
 function calculateCoinValue() {
+    return;
     let now = new Date();
     let rand = 0;
     let type;
@@ -276,7 +277,9 @@ app.post("/ranking", (req, res) => {
             let currentvalue = 50000;
             let result = [];
             rows.sort((a, b) => {
-                return parseInt(a.MoneyBalance) + (currentvalue*parseInt(a.CoinBalance)) > parseInt(b.MoneyBalance) + (currentvalue*parseInt(a.CoinBalance)) ? -1 : parseInt(a.MoneyBalance) + (currentvalue*parseInt(a.CoinBalance)) < parseInt(b.MoneyBalance) + (currentvalue*parseInt(a.CoinBalance)) ? 1 : 0;
+                a.MoneyBalance = parseFloat(a.MoneyBalance) + (currentvalue*parseFloat(a.CoinBalance));
+                b.MoneyBalance = parseFloat(b.MoneyBalance) + (currentvalue*parseFloat(b.CoinBalance));
+                return a.MoneyBalance > b.MoneyBalance ? -1 : a.MoneyBalance < b.MoneyBalance ? 1 : 0;
             });
     
             rows.forEach((userdata, idx) => {
@@ -286,11 +289,15 @@ app.post("/ranking", (req, res) => {
                     Balance: parseInt(userdata.MoneyBalance) + (currentvalue*parseInt(userdata.CoinBalance))
                 })
             })
-
+            
             if (req.body.id != undefined) {
                 Log.writeLog(req.body.id, "GetRanking", "순위 조회");
-                result.forEach((userdata, idx) => {
-                    if (userdata.name == req.body.id) return res.send({ ranking: result, currentRank:  idx+1 });
+                result.some((userdata, idx) => {
+                    if (userdata.name == req.body.id) {
+                        res.send({ ranking: result, currentRank:  idx+1 });
+                        return true;
+                    }
+                    if (idx == result.length-1) return res.send({ ranking: result });
                 })
             } else {
                 res.send({ ranking: result });
