@@ -97,6 +97,7 @@ class Main extends React.Component {
 
     this.state.serverSocket = io.connect(`${serverAddress}`);
     this.state.serverSocket.on("CoinValue", (data) => {
+      console.log(data);
       this.pushData(data);
       this.setState({
         type: data.type,

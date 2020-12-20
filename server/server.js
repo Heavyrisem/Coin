@@ -47,16 +47,15 @@ let coinvalue = 0;
 io.on("connection", client => {
 
     // console.log(`${client.id} 님이 접속했습니다.`);
-    DB.query(`SELECT * FROM coinValue`, (err, rows) => {
+    DB.query(`SELECT * FROM coinValue ORDER BY id DESC limit 5`, (err, rows) => {
         if (err) return Log.writeLog("System", "Error", "coinValue 데이터베이스 조회 오류");
         if (!rows.length) return;
+        rows = rows.reverse();
 
-        for (let i = 5; i > 0; i--) {
-            if (!i||!rows[rows.length-1-i]) break;
-            let date = new Date(rows[rows.length-1-i].date);
-            client.emit("CoinValue", { coinValue: rows[rows.length-1-i].value, updateTime: `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`, nextUpdate: UpdateTick, type: "none" });
-            // console.log(rows[rows.length-1-i]);
-        }
+        rows.forEach(row => {   
+            let date = new Date(row.date);
+            client.emit("CoinValue", { coinValue: row.value, updateTime: `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`, nextUpdate: UpdateTick, type: "none" });
+        });
     })
 
 

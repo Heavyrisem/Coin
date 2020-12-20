@@ -12,8 +12,7 @@ class LeaderBoard extends React.Component {
         MyBalance: undefined
     }
 
-    constructor(props) {
-        super(props);
+    componentDidMount() {
         this.GetLeaderBoard();
     }
 
@@ -30,7 +29,6 @@ class LeaderBoard extends React.Component {
             body: (this.props.userID)? JSON.stringify({id: this.props.userID}): undefined,
             headers: {'Content-Type': 'application/json'}
         });
-        console.log(ServerResponse);
         ServerResponse = await ServerResponse.json();
         if (ServerResponse.ranking) {
             this.setState({
