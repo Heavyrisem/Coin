@@ -109,7 +109,7 @@ function calculateCoinValue() {
         //  {rand *= 1.5;console.log("상승율 150% 증가")} //상한선의 1/3 이하일때, 20% 추가후 증가
     }
 
-    if(!RandomData(0, 101)) {rand = coinvalue/2;console.log("폭락")}
+    if(!RandomData(0, 101)) {rand = (coinvalue/2)*-1;console.log("폭락")}
     // console.log("조정 후", rand);
 
     rand += parseInt(coinvalue);
