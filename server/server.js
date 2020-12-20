@@ -19,13 +19,6 @@ const mysql = require('mysql');
 const DB = mysql.createConnection(Config.DB);
 DB.connect();
 
-DB.query('SELECT * FROM userinfo', (err, rows) => {
-    if (err) return console.log(err);
-    rows.forEach(value => {
-        console.log(value.name);
-    })
-    // console.log(rows);
-})
 
 // const sqlite3 = require('sqlite3').verbose();
 // const DB = new sqlite3.Database('./DB.db', sqlite3.OPEN_READWRITE, err => { // d
@@ -76,6 +69,7 @@ io.on("connection", client => {
 });
 
 function calculateCoinValue() {
+    return;
     let now = new Date();
     let rand = 0;
     let type;
@@ -262,6 +256,8 @@ app.post("/sell", (req, res) => {
     })
 })
 
+// External Component
+
 app.post("/getWise", (req, res) => {
     DB.query(`SELECT * FROM wiseSaying`, (err, rows) => {
         if (err) return console.log(err);
@@ -272,6 +268,37 @@ app.post("/getWise", (req, res) => {
             res.send({ msg: "NO_DATA" });
         }
     })
+});
+
+app.post("/ranking", (req, res) => {
+    DB.query(`SELECT * FROM userinfo`, (err, rows) => {
+        if (err)  { res.send({msg: "데이터베이스 조회 오류"}); return Log.writeLog(req.body.id, "Error", "데이터베이스 조회 오류" + err) }
+        if (rows.length) {
+            let currentvalue = 50000;
+            let result = [];
+            rows.sort((a, b) => {
+                return parseInt(a.MoneyBalance) + (currentvalue*parseInt(a.CoinBalance)) > parseInt(b.MoneyBalance) + (currentvalue*parseInt(a.CoinBalance)) ? -1 : parseInt(a.MoneyBalance) + (currentvalue*parseInt(a.CoinBalance)) < parseInt(b.MoneyBalance) + (currentvalue*parseInt(a.CoinBalance)) ? 1 : 0;
+            });
+    
+            rows.forEach(userdata => {
+                result.push({
+                    name: userdata.name,
+                    Balance: parseInt(userdata.MoneyBalance) + (currentvalue*parseInt(userdata.CoinBalance))
+                })
+            })
+
+            if (req.body.id != undefined) {
+                Log.writeLog(req.body.id, "GetRanking", "순위 조회");
+                result.forEach((userdata, idx) => {
+                    if (userdata.name == req.body.id) return res.send({ ranking: result, currentRank:  idx+1 });
+                })
+            } else {
+                res.send({ ranking: result });
+            }
+        } else {
+            res.send({ msg: "NO_DATA" });
+        }
+    });
 })
 
 // Develope Tools

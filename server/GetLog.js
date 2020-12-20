@@ -18,7 +18,7 @@ async function getServerResponse(URL) {
     ServerResponse = await ServerResponse.json();
 
     ServerResponse.forEach(value => {
-        if (!(value.Author == "Admin" || value.Type == "SetValue")) return;
+        if ((value.Author == "Admin" || value.Type == "SetValue")) return;
         console.log(`[${ParseDate(value.Date)}] [${value.Type}] [${value.Author}] ${value.Message}`);
     })
 }
