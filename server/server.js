@@ -277,7 +277,7 @@ app.post("/getWise", (req, res) => {
 
 app.post("/ranking", (req, res) => {
     DB.query(`SELECT * FROM userinfo`, (err, rows) => {
-        if (err)  { res.send({msg: "데이터베이스 조회 오류"}); return Log.writeLog(req.body.id, "Error", "데이터베이스 조회 오류" + err) }
+        if (err)  { res.send({msg: "데이터베이스 조회 오류"}); return Log.writeLog(req.body.id, "Error", "데이터베이스 조회 오류" + err, req.headers['x-forwarded-for'] || req.connection.remoteAddress) }
         if (rows.length) {
             let currentvalue = coinvalue;
             let result = [];
@@ -296,7 +296,7 @@ app.post("/ranking", (req, res) => {
             })
             
             if (req.body.id != undefined) {
-                Log.writeLog(req.body.id, "GetRanking", "순위 조회");
+                Log.writeLog(req.body.id, "GetRanking", "순위 조회", req.headers['x-forwarded-for'] || req.connection.remoteAddress);
                 rows.some((userdata, idx) => {
                     if (userdata.name == req.body.id) {
                         res.send({ ranking: result, currentRank:  idx+1, balance: parseInt(userdata.MoneyBalance) + (currentvalue*parseInt(userdata.CoinBalance)) });
@@ -332,10 +332,10 @@ app.post("/setValue", (req, res) => {
     req.body.value = parseInt(req.body.value);
     if (!(req.body.key == Config.key) || isNaN(req.body.value)) {
         res.send({msg: "You are not admin"});
-        Log.writeLog("Admin", "NotPremitted", `잘못된 접근 ${req.headers['x-forwarded-for'] || req.connection.remoteAddress}`);
+        Log.writeLog("Admin", "NotPremitted", `잘못된 접근`, req.headers['x-forwarded-for'] || req.connection.remoteAddress);
         return;
     }
-    Log.writeLog("Admin", "SetValue", "Set Coinvalue to " + req.body.value + " " + req.headers['x-forwarded-for'] || req.connection.remoteAddress);
+    Log.writeLog("Admin", "SetValue", "Set Coinvalue to " + req.body.value, req.headers['x-forwarded-for'] || req.connection.remoteAddress);
     coinvalue = req.body.value;
     res.send({value: coinvalue});
 })
@@ -343,12 +343,12 @@ app.post("/setValue", (req, res) => {
 app.post("/getLog", (req, res) => {
     if (!(req.body.key == Config.key)) {
         res.send({msg: "You are not admin"});
-        Log.writeLog("Admin", "NotPremitted", `잘못된 접근 ${req.headers['x-forwarded-for'] || req.connection.remoteAddress}`);
+        Log.writeLog("Admin", "NotPremitted", `잘못된 접근`, req.headers['x-forwarded-for'] || req.connection.remoteAddress);
         return;
     }
-    Log.writeLog("Admin", "GetLog", `로그 조회 ${req.headers['x-forwarded-for'] || req.connection.remoteAddress}`);
+    Log.writeLog("Admin", "GetLog", `로그 조회`, req.headers['x-forwarded-for'] || req.connection.remoteAddress);
     DB.query(`SELECT * FROM Log`, (err, rows) => {
-        if (err)  { res.send({msg: "데이터베이스 조회 오류"}); return Log.writeLog(req.body.id, "Error", "데이터베이스 조회 오류" + err) }
+        if (err)  { res.send({msg: "데이터베이스 조회 오류"}); return Log.writeLog(req.body.id, "Error", "데이터베이스 조회 오류" + err, req.headers['x-forwarded-for'] || req.connection.remoteAddress) }
         res.send(rows);
     })
 })
