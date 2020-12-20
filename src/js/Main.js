@@ -6,6 +6,7 @@ import unit from './Unitchanger';
 
 import Trade from './Trade';
 import CountUp from 'react-countup';
+import LeaderBoard from './LeaderBoard';
 
 import io from 'socket.io-client';
 
@@ -260,6 +261,8 @@ class Main extends React.Component {
             </span>
           </div></>)
         }
+
+        {/* <LeaderBoard /> */}
 
         <div className="card">
           <div className="Say">"{this.state.wiseSaying.Message}"</div>
