@@ -17,15 +17,15 @@ function GetCurrentTime() {
     return `${now.getFullYear()}-${now.getMonth()+1}-${now.getDate()} ${now.getHours()}.${now.getMinutes()}.${now.getSeconds()}`;
 }
 
-function writeLog(Author, Type, Message) {
+function writeLog(Author, Type, Message, Ip) {
     switch (typeof Message) {
         case "object":
             Message = replaceAll(JSON.stringify(Message), `"`, " ");
             break;
     }
-            
-    console.log(`[${GetCurrentTime()}] [${Type}] [${Author}] ${Message}`);
-    DB.query(`INSERT INTO Log(Date, Message, Type, Author) VALUES('${new Date()}', '${Message}', '${Type}', '${Author}')`);
+    if (Ip == undefined) Ip = "none";
+    console.log(`[${GetCurrentTime()}] [${Type}] [${Author}] ${Message} ${Ip}`);
+    DB.query(`INSERT INTO Log(Date, Message, Type, Author, Ip) VALUES('${new Date()}', '${Message}', '${Type}', '${Author}', '${Ip}')`);
 }
 
 function replaceAll(originstr, findstr, replacestr) {
