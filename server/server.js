@@ -2,6 +2,7 @@ const Config = require("./Config.json")
 
 const express = require('express');
 const app = express();
+const rateLimit = require("express-rate-limit");
 // require('greenlock-express').init({
 //     packageRoot: '../',
 //     configDir: './greenlock.d',
@@ -28,7 +29,10 @@ DB.connect();
 //         console.log(`Database Connected`);
 //     }
 // });
-
+app.use(rateLimit({
+    windowMs: 30 * 1000, // 30 sec
+    max: 50
+}))
 app.use(express.static('../build'));
 app.use(require('cors')());
 app.use(bodyParser.json());       // to support JSON-encoded bodies
