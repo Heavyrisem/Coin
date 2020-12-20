@@ -37,7 +37,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 }));
 
 const PORT = 80;
-const UpdateTick = 5000;
+const UpdateTick = 8500;
 const MinimumCoinValue = 10000;
 const DefaultCoinValue = 100000;
 const MaximunCoinValue = 1000000;
