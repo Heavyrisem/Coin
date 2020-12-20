@@ -279,7 +279,8 @@ app.post("/ranking", (req, res) => {
                 return parseInt(a.MoneyBalance) + (currentvalue*parseInt(a.CoinBalance)) > parseInt(b.MoneyBalance) + (currentvalue*parseInt(a.CoinBalance)) ? -1 : parseInt(a.MoneyBalance) + (currentvalue*parseInt(a.CoinBalance)) < parseInt(b.MoneyBalance) + (currentvalue*parseInt(a.CoinBalance)) ? 1 : 0;
             });
     
-            rows.forEach(userdata => {
+            rows.forEach((userdata, idx) => {
+                if (idx > 5) return;
                 result.push({
                     name: userdata.name,
                     Balance: parseInt(userdata.MoneyBalance) + (currentvalue*parseInt(userdata.CoinBalance))

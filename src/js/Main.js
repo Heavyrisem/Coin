@@ -262,7 +262,7 @@ class Main extends React.Component {
           </div></>)
         }
 
-        {/* <LeaderBoard /> */}
+        <LeaderBoard />
 
         <div className="card">
           <div className="Say">"{this.state.wiseSaying.Message}"</div>
