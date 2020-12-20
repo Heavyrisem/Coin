@@ -15,6 +15,7 @@ const SHA256 = require('./SHA256');
 const fs = require('fs');
 
 const Log = require('./log');
+const Consolelog = require('./consolelog').init('server');
 
 const mysql = require('mysql');
 const DB = mysql.createConnection(Config.DB);
