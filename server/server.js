@@ -291,7 +291,7 @@ app.post("/ranking", (req, res) => {
             
             if (req.body.id != undefined) {
                 Log.writeLog(req.body.id, "GetRanking", "순위 조회");
-                result.some((userdata, idx) => {
+                rows.some((userdata, idx) => {
                     if (userdata.name == req.body.id) {
                         res.send({ ranking: result, currentRank:  idx+1 });
                         return true;
