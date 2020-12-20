@@ -33,6 +33,7 @@
     background-color: rgb(171, 45, 255);
     color: white;
     border-radius: .5rem;
+    border: none;
 
     /* position: ; */
     bottom: 0;
@@ -41,6 +42,7 @@
     width: 100%;
     padding: 2% 1%;
     
+    font-size: 1rem;
     font-weight: bold;
     margin: 0 1%;
 }

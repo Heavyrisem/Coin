@@ -79,7 +79,7 @@ class Login extends React.Component {
                 <div className="Login">
                     <span className="LoginTitle">계정 생성</span>
                     <input type="text" className="LoginInputValue" ref={(e) => this.id = e} placeholder="ID" />
-                    <input type="password" className="LoginInputValue" ref={(e) => this.passwd = e} placeholder="PW" />
+                    <input type="password" className="LoginInputValue" ref={(e) => this.passwd = e} onKeyPress={e=>{if(e.key == "Enter") this.requestRegister()}} placeholder="PW" />
                     <span className="ServerResponse">{
                         (this.state.ServerResponse)&&
                         (this.state.ServerResponse == "USER_EXISTS")? UserExists :
@@ -93,7 +93,7 @@ class Login extends React.Component {
                 <div className="Login">
                     <span className="LoginTitle">로그인</span>
                     <input type="text" className="LoginInputValue" ref={(e) => this.id = e} placeholder="ID" />
-                    <input type="password" className="LoginInputValue" ref={(e) => this.passwd = e} placeholder="PW" />
+                    <input type="password" className="LoginInputValue" ref={(e) => this.passwd = e} onKeyPress={e=>{if(e.key == "Enter") this.requestLogin()}} placeholder="PW" />
                     <span className="ServerResponse">{
                         (this.state.ServerResponse)&&
                         (this.state.ServerResponse == "NO_USER")? Id :
@@ -101,8 +101,8 @@ class Login extends React.Component {
                         this.state.ServerResponse
                     }</span>
                     <div className="LoginBtns">
-                        <div style={{color: 'rgb(146, 146, 146)', backgroundColor: 'rgb(231, 231, 231)'}} className="LoginSubmit" onClick={e=>{e.stopPropagation();this.setState({register: true, ServerResponse: undefined})}}>계정 생성</div>
-                        <div className="LoginSubmit" onClick={this.requestLogin.bind(this)}>로그인</div>
+                        <button style={{color: 'rgb(146, 146, 146)', backgroundColor: 'rgb(231, 231, 231)'}} className="LoginSubmit" onClick={e=>{e.stopPropagation();this.setState({register: true, ServerResponse: undefined})}}>계정 생성</button>
+                        <button className="LoginSubmit" onClick={this.requestLogin.bind(this)}>로그인</button>
                     </div>
                 </div>
             )

@@ -36,7 +36,7 @@ class LeaderBoard extends React.Component {
             <div className="card LeaderBoard">
                 순위
                 {this.state.Ranking&& this.state.Ranking.map(userdata => {
-                    return <div>{userdata.name}</div>
+                    return <div key={userdata.name}>{userdata.name}</div>
                 })}
             </div>
         )
