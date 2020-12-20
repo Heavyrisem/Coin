@@ -97,6 +97,8 @@ function calculateCoinValue() {
         if (coinvalue >= MaximunCoinValue - MaximunCoinValue / 4) { rand *= 3.0; console.log("하락율 300% 증가") } // 상한선의 2/3 이상일때 130%감소
         if (coinvalue <= DefaultCoinValue) { rand = rand * 0.1; console.log("하락율 900% 감소") }
         //  {rand *= 0.5;console.log("하락율 50% 감소")} //상한선의 1/3 이하일때, 50% 감소후 하락
+        if(RandomData(0, 2)) rand*=1.3;
+
         rand *= -1;
     } else {
         if (coinvalue >= MaximunCoinValue / 3) { rand *= 1; } //상한선의 1/3 이상일때, 100% 증가
