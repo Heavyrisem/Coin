@@ -11,10 +11,10 @@ class UnitChangerAPI {
 	
 	Killo(number) {
 		number = parseInt(number);
-		let names = ["", "만", "천만"];
+		let names = ["천", "만", "억", "조", "경", "해"];
 		
 		let e = Math.floor(Math.log(number) / Math.log(10000));
-		if (e >= 2) e = 1; 
+		// if (e >= 2) e = 1; 
 		
 		if (e == "-Infinity") return "0 " + names[0];
 		else return (number / Math.pow(10000, Math.floor(e))).toFixed(2) + "" + names[e];

@@ -276,11 +276,11 @@ app.post("/ranking", (req, res) => {
     DB.query(`SELECT * FROM userinfo`, (err, rows) => {
         if (err)  { res.send({msg: "데이터베이스 조회 오류"}); return Log.writeLog(req.body.id, "Error", "데이터베이스 조회 오류" + err) }
         if (rows.length) {
-            let currentvalue = 50000;
+            let currentvalue = coinvalue;
             let result = [];
             rows.sort((a, b) => {
-                a.MoneyBalance = parseFloat(a.MoneyBalance) + (currentvalue*parseFloat(a.CoinBalance));
-                b.MoneyBalance = parseFloat(b.MoneyBalance) + (currentvalue*parseFloat(b.CoinBalance));
+                a.MoneyBalance = parseInt(a.MoneyBalance) + (currentvalue*parseInt(a.CoinBalance));
+                b.MoneyBalance = parseInt(b.MoneyBalance) + (currentvalue*parseInt(b.CoinBalance));
                 return a.MoneyBalance > b.MoneyBalance ? -1 : a.MoneyBalance < b.MoneyBalance ? 1 : 0;
             });
     
@@ -296,7 +296,7 @@ app.post("/ranking", (req, res) => {
                 Log.writeLog(req.body.id, "GetRanking", "순위 조회");
                 rows.some((userdata, idx) => {
                     if (userdata.name == req.body.id) {
-                        res.send({ ranking: result, currentRank:  idx+1 });
+                        res.send({ ranking: result, currentRank:  idx+1, balance: parseInt(userdata.MoneyBalance) + (currentvalue*parseInt(userdata.CoinBalance)) });
                         return true;
                     }
                     if (idx == rows.length-1) return res.send({ ranking: result });

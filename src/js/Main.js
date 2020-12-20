@@ -134,6 +134,7 @@ class Main extends React.Component {
   }
 
   pushData(data) {
+    console.log(data.type);
     if (data) {
       // console.log(getStandardDeviation(this.state.chartoption.data.datasets[0].data))
 
@@ -228,7 +229,7 @@ class Main extends React.Component {
 
         <div className="chart card">
           <span className="CoinValue">
-            <span className="Value">{<CountUp start={this.state.chartoption.data.datasets[0].data[this.state.chartoption.data.datasets[0].data.length-2]} end={this.state.lastCoinValue} formattingFn={unit.Comma}/>}</span>
+            <span className="Value">{<CountUp start={parseInt(this.state.chartoption.data.datasets[0].data[this.state.chartoption.data.datasets[0].data.length-2])} end={parseInt(this.state.lastCoinValue)} formattingFn={unit.Comma}/>}</span>
             <span className="ValueType">KRW </span>
             <span className="ValueStatus" style={this.getValueStatus()}>
             {(this.state.CoinValueStatus > 0 && this.state.CoinValueStatus)&& "+"}{this.state.CoinValueStatus}
@@ -262,7 +263,7 @@ class Main extends React.Component {
           </div></>)
         }
 
-        {/* <LeaderBoard /> */}
+        <LeaderBoard userID={this.props.userInfo.userID} />
 
         <div className="card">
           <div className="Say">"{this.state.wiseSaying.Message}"</div>

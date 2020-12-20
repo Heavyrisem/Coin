@@ -1,3 +1,25 @@
 .LeaderBoard {
     padding: 3% 8%;
 }
+
+.LeaderBoardTitle {
+    display: block;
+    font-size: 1.3rem;
+    margin: .5rem 0;
+}
+
+
+.Leaders {
+    color: rgb(58, 58, 58);
+    line-height: 1.4rem;
+}
+.Leaders span {
+    color: rgb(138, 138, 138)
+}
+.LeaderBalance {
+    float: right;
+}
+
+.MyScore{
+    color: rgb(218, 95, 255);
+}
