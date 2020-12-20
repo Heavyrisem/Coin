@@ -279,9 +279,9 @@ app.post("/ranking", (req, res) => {
             let currentvalue = coinvalue;
             let result = [];
             rows.sort((a, b) => {
-                a.MoneyBalance = parseInt(a.MoneyBalance) + (currentvalue*parseInt(a.CoinBalance));
-                b.MoneyBalance = parseInt(b.MoneyBalance) + (currentvalue*parseInt(b.CoinBalance));
-                return a.MoneyBalance > b.MoneyBalance ? -1 : a.MoneyBalance < b.MoneyBalance ? 1 : 0;
+                let tmpa = parseInt(a.MoneyBalance) + (currentvalue*parseInt(a.CoinBalance));
+                let tmpb = parseInt(b.MoneyBalance) + (currentvalue*parseInt(b.CoinBalance));
+                return tmpa > tmpb ? -1 : tmpa < tmpb ? 1 : 0;
             });
     
             rows.forEach((userdata, idx) => {

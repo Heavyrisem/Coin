@@ -134,7 +134,6 @@ class Main extends React.Component {
   }
 
   pushData(data) {
-    console.log(data.type);
     if (data) {
       // console.log(getStandardDeviation(this.state.chartoption.data.datasets[0].data))
 

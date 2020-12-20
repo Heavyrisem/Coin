@@ -25,7 +25,7 @@ class LeaderBoard extends React.Component {
     }
     
     async GetLeaderBoard() {
-        let ServerResponse = await fetch(`${Config.serverAddress}/ranking`, {
+        let ServerResponse = await fetch(`http://localhost/ranking`, {
             method: "POST",
             body: (this.props.userID)? JSON.stringify({id: this.props.userID}): undefined,
             headers: {'Content-Type': 'application/json'}
