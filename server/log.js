@@ -23,6 +23,8 @@ function writeLog(Author, Type, Message, Ip) {
             Message = replaceAll(JSON.stringify(Message), `"`, " ");
             break;
     }
+    
+    Message = replaceAll(Message, "'", "");
     if (Ip == undefined) Ip = "none";
     console.log(`[${GetCurrentTime()}] [${Type}] [${Author}] ${Message} ${Ip}`);
     DB.query(`INSERT INTO Log(Date, Message, Type, Author, Ip) VALUES('${new Date()}', '${Message}', '${Type}', '${Author}', '${Ip}')`);

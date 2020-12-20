@@ -24,7 +24,7 @@ class Login extends React.Component {
         ServerResponse = await ServerResponse.json();
         
         if (ServerResponse.id) {
-            this.props.onSuccess(ServerResponse.id);
+            this.props.onSuccess(ServerResponse.id, ServerResponse.Token);
             this.props.SetBalance(ServerResponse.CoinBalance, ServerResponse.MoneyBalance);
         }
         else

@@ -31,7 +31,8 @@ class Trade extends React.Component {
             method: "POST",
             body: JSON.stringify({
                 id: this.props.userInfo.userID,
-                Amount: this.InputValue.value
+                Amount: this.InputValue.value,
+                Token: this.props.userInfo.userToken
             }),
             headers: {'Content-type': 'application/json'}
         });
@@ -67,12 +68,13 @@ class Trade extends React.Component {
     async Sell(e) {
         this.stopEventBubble(e);
         if (this.InputValue.value < 1) return;
-        console.log(this.props.userInfo.userID, this.InputValue.value)
+        
         let ServerResponse = await fetch(`${serverAddress}/sell`, {
             method: "POST",
             body: JSON.stringify({
                 id: this.props.userInfo.userID,
-                Amount: this.InputValue.value
+                Amount: this.InputValue.value,
+                Token: this.props.userInfo.userToken
             }),
             headers: {'Content-type': 'application/json'}
         });

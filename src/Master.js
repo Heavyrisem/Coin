@@ -12,7 +12,8 @@ class Master extends React.Component {
         showLoginPanel: false,
         userID: undefined,
         userCoinBalance: 0,
-        userCoinBalance: 0
+        userCoinBalance: 0,
+        userToken: undefined
     }
 
     showLoginPanel(e) {
@@ -27,9 +28,10 @@ class Master extends React.Component {
         });
     }
 
-    onLogin(userID) {
+    onLogin(userID, userToken) {
         this.setState({
-            userID: userID
+            userID: userID,
+            userToken: userToken
         });
         // cookie
     }
@@ -41,7 +43,8 @@ class Master extends React.Component {
         let ServerResponse = await fetch(`${serverAddress}/getBalance`, {
             method: "POST",
             body: JSON.stringify({
-                name: this.state.userID
+                name: this.state.userID,
+                Token: this.state.userToken
             }),
             headers: {'Context-type': 'application/json'}
         });
