@@ -69,7 +69,6 @@ io.on("connection", client => {
 });
 
 function calculateCoinValue() {
-    return;
     let now = new Date();
     let rand = 0;
     let type;
