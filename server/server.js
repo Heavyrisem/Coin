@@ -299,7 +299,7 @@ app.post("/ranking", (req, res) => {
                         res.send({ ranking: result, currentRank:  idx+1 });
                         return true;
                     }
-                    if (idx == result.length-1) return res.send({ ranking: result });
+                    if (idx == rows.length-1) return res.send({ ranking: result });
                 })
             } else {
                 res.send({ ranking: result });
