@@ -280,7 +280,7 @@ app.post("/ranking", (req, res) => {
             });
     
             rows.forEach((userdata, idx) => {
-                if (idx > 5) return;
+                if (idx > 4) return;
                 result.push({
                     name: userdata.name,
                     Balance: parseInt(userdata.MoneyBalance) + (currentvalue*parseInt(userdata.CoinBalance))
