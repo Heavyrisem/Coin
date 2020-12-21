@@ -292,7 +292,7 @@ app.post("/ranking", (req, res) => {
             let filter = ["용쿤2", "용쿤3", "용쿤4", "용쿤5"];
     
             rows.forEach((userdata, idx) => {
-                if (filter.indexOf(userdata.name) != -1) userdata.splice(idx, 1);
+                if (filter.indexOf(userdata.name) != -1) rows.splice(idx, 1);
                 if (idx > 4) return;
                 result.push({
                     name: userdata.name,
