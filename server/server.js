@@ -288,8 +288,11 @@ app.post("/ranking", (req, res) => {
                 let tmpb = parseInt(b.MoneyBalance) + (currentvalue*parseInt(b.CoinBalance));
                 return tmpa > tmpb ? -1 : tmpa < tmpb ? 1 : 0;
             });
+
+            let filter = ["용쿤2", "용쿤3", "용쿤4", "용쿤5"];
     
             rows.forEach((userdata, idx) => {
+                if (filter.indexOf(userdata.name) != -1) return;
                 if (idx > 4) return;
                 result.push({
                     name: userdata.name,
