@@ -48,12 +48,13 @@ const DefaultCoinValue = 100000;
 const MaximunCoinValue = 1000000;
 let coinvalue = 0;
 
-const Client_VER = 4;
+const Client_VER = 5;
 
 app.use((req, res, next) => {
     if (!req.url.indexOf("index.html") == -1 || req.url != '/') return next();
     // console.log(req.headers);
     Log.writeLog("System", "MainPage", (req.header('User-Agent')), req.headers['x-forwarded-for'] || req.connection.remoteAddress);
+    if (req.header('User-Agent').indexOf("Headless"))
     fs.readFile(`../build/index.html`, (err, data) => {
         if (err) {
             Log.writeLog("System", "CriticalError", "서비스 불가능, index.html 로드중 오류가 발생했습니다." + err);
@@ -88,7 +89,7 @@ io.on("connection", client => {
 
     let disconnectTimer;
     let checkVersion = setInterval(() => {
-        console.log("asking version", client.handshake.address);
+        // console.log("asking version", client.handshake.address);
         client.emit("version");
         disconnectTimer = setTimeout(() => {
             console.log(client.handshake.address, "Not Responding For asking Version");
