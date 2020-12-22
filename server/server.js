@@ -54,7 +54,9 @@ app.use((req, res, next) => {
     if (!req.url.indexOf("index.html") == -1 || req.url != '/') return next();
     // console.log(req.headers);
     Log.writeLog("System", "MainPage", (req.header('User-Agent')), req.headers['x-forwarded-for'] || req.connection.remoteAddress);
-    if (req.header('User-Agent').indexOf("Headless"))
+    if (req.header('User-Agent').indexOf("Headless") != -1) {
+        Log.writeLog("System", "BotDetected", req.header('User-Agent'), req.headers['x-forwarded-for'] || req.connection.remoteAddress);
+    }
     fs.readFile(`../build/index.html`, (err, data) => {
         if (err) {
             Log.writeLog("System", "CriticalError", "서비스 불가능, index.html 로드중 오류가 발생했습니다." + err);
