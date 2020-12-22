@@ -95,7 +95,7 @@ class Main extends React.Component {
 
   connectSocket() {
 
-    this.state.serverSocket = io.connect(`${Config.serverAddress}`);
+    this.state.serverSocket = io(`${Config.serverAddress}`);
     this.state.serverSocket.on("CoinValue", (data) => {
       this.pushData(data);
       this.setState({
@@ -103,14 +103,14 @@ class Main extends React.Component {
         lastCoinValue: data.coinValue
       });
     })
-
+    
     this.state.serverSocket.on('connect', () => {
       console.log("connected");
     });
-
-    this.state.serverSocket.on('version', () => {
-      this.state.serverSocket.emit('version', Config.version);
-    })
+    
+    // this.state.serverSocket.on('version', () => {
+    //   // this.state.serverSocket.emit('version', Config.version);
+    // })
 
     this.state.serverSocket.on('refresh', () => {
       window.location.reload();
