@@ -87,7 +87,7 @@ io.on("connection", client => {
     let checkVersion = setInterval(() => {
         client.emit("version", undefined);
         disconnectTimer = setTimeout(() => {
-            console.log(client.id, "Not Responding For asking Version");
+            console.log(client.handshake.address, "Not Responding For asking Version");
             client.disconnect();
             clearInterval(checkVersion);
         }, 500);
