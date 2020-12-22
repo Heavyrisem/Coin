@@ -12,6 +12,7 @@
 /build
 
 /server/BackupDB
+/server/logs
 
 # misc
 .DS_Store

@@ -1,3 +1,4 @@
 {
-    "serverAddress": "http://heavyrisem.kro.kr"
+    "serverAddress": "http://heavyrisem.kro.kr",
+    "version": 1
 }

@@ -10,7 +10,7 @@ import LeaderBoard from './LeaderBoard';
 
 import io from 'socket.io-client';
 
-import {serverAddress} from '../Config.json';
+import Config from '../Config.json';
 
 class Main extends React.Component {
   state = {
@@ -95,7 +95,7 @@ class Main extends React.Component {
 
   connectSocket() {
 
-    this.state.serverSocket = io.connect(`${serverAddress}`);
+    this.state.serverSocket = io.connect(`${Config.serverAddress}`);
     this.state.serverSocket.on("CoinValue", (data) => {
       this.pushData(data);
       this.setState({
@@ -106,6 +106,14 @@ class Main extends React.Component {
 
     this.state.serverSocket.on('connect', () => {
       console.log("connected");
+    });
+
+    this.state.serverSocket.on('version', () => {
+      this.state.serverSocket.emit('version', Config.version);
+    })
+
+    this.state.serverSocket.on('refresh', () => {
+      window.location.reload();
     })
 
   }
@@ -192,7 +200,7 @@ class Main extends React.Component {
   }
 
   async GetWiseSaying() {
-    let ServerResponse = await fetch(`${serverAddress}/getWise`, {
+    let ServerResponse = await fetch(`${Config.serverAddress}/getWise`, {
       method: 'POST'
     });
     ServerResponse = await ServerResponse.json();
