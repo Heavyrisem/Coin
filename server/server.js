@@ -69,8 +69,11 @@ app.use(express.static('../build'));
 
 let ConnectedSocketCounter = 0;
 io.on("connection", client => {
+
     ConnectedSocketCounter++;
     console.log("New connect From ", client.handshake.address, ConnectedSocketCounter);
+    client.emit()
+
     DB.query(`SELECT * FROM coinValue ORDER BY id DESC limit 5`, (err, rows) => {
         if (err) return Log.writeLog("System", "Error", "coinValue 데이터베이스 조회 오류");
         if (!rows.length) return;
@@ -91,11 +94,12 @@ io.on("connection", client => {
             console.log(client.handshake.address, "Not Responding For asking Version");
             client.disconnect();
             clearInterval(checkVersion);
-        }, 500);
+        }, 5000);
     }, 30000);
 
     client.on("version", ver => {
         if (ver != Client_VER) {
+            console.log("Wrong Version Response From", client.handshake.address, "With", ver);
             client.emit("refresh", undefined);
             client.disconnect();
         } else {

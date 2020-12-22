@@ -90,6 +90,7 @@ class Master extends React.Component {
         if (window['document']['documentElement']['getAttribute']('selenium')) return true;
         if (window['document']['documentElement']['getAttribute']('webdriver')) return true;
         if (window['document']['documentElement']['getAttribute']('driver')) return true;
+        if (navigator.webdriver) return true;
     
         return false;
     };
