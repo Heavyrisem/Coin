@@ -48,7 +48,7 @@ const DefaultCoinValue = 100000;
 const MaximunCoinValue = 1000000;
 let coinvalue = 0;
 
-const Client_VER = 3;
+const Client_VER = 4;
 
 app.use((req, res, next) => {
     if (!req.url.indexOf("index.html") == -1 || req.url != '/') return next();
