@@ -51,7 +51,7 @@ let coinvalue = 0;
 app.use((req, res, next) => {
     if (!req.url.indexOf("index.html") == -1 || req.url != '/') return next();
     // console.log(req.headers.referrer || req.headers.referer);
-    Log.writeLog("[System]", "[MainPage]", (req.header('User-Agent')), req.headers['x-forwarded-for'] || req.connection.remoteAddress);
+    Log.writeLog("System", "MainPage", (req.header('User-Agent')), req.headers['x-forwarded-for'] || req.connection.remoteAddress);
     fs.readFile(`../build/index.html`, (err, data) => {
         if (err) {
             Log.writeLog("System", "CriticalError", "서비스 불가능, index.html 로드중 오류가 발생했습니다." + err);
