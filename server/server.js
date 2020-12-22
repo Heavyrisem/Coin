@@ -32,8 +32,8 @@ const RandomToken = require("./RandomToken");
 //     }
 // });
 app.use(rateLimit({
-    windowMs: 3 * 1000, // 30 sec
-    max: 10
+    windowMs: 30 * 1000, // 30 sec
+    max: 30
 }))
 app.use(require('cors')());
 app.use(bodyParser.json());       // to support JSON-encoded bodies
@@ -53,12 +53,12 @@ const Client_VER = 5;
 app.use((req, res, next) => {
     if (!req.url.indexOf("index.html") == -1 || req.url != '/') return next();
     
-    Log.writeLog("System", "MainPage", (req.header('User-Agent')), req.headers['x-forwarded-for'] || req.connection.remoteAddress);
     if (req.header('User-Agent').indexOf("Headless") != -1) {
         Log.writeLog("System", "BotDetected", req.header('User-Agent'), req.headers['x-forwarded-for'] || req.connection.remoteAddress);
         return res.send("오류가 발생했습니다.");
     }
 
+    Log.writeLog("System", "MainPage", (req.header('User-Agent')), req.headers['x-forwarded-for'] || req.connection.remoteAddress);
     fs.readFile(`../build/index.html`, (err, data) => {
         if (err) {
             Log.writeLog("System", "CriticalError", "서비스 불가능, index.html 로드중 오류가 발생했습니다." + err);
