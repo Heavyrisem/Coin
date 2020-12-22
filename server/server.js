@@ -66,9 +66,11 @@ app.use((req, res, next) => {
 })
 app.use(express.static('../build'));
 
-io.on("connection", client => {
 
-    // console.log(`${client.id} 님이 접속했습니다.`);
+let ConnectedSocketCounter = 0;
+io.on("connection", client => {
+    ConnectedSocketCounter++;
+    console.log(ConnectedSocketCounter, "동시 접속자 수");
     DB.query(`SELECT * FROM coinValue ORDER BY id DESC limit 5`, (err, rows) => {
         if (err) return Log.writeLog("System", "Error", "coinValue 데이터베이스 조회 오류");
         if (!rows.length) return;
@@ -99,9 +101,9 @@ io.on("connection", client => {
         }
     })
     
-    // client.on("disconnect", () => {
-    //     console.log(`${client.id} 님이 접속을 종료했습니다.`)
-    // });
+    client.on("disconnect", () => {
+        ConnectedSocketCounter--;
+    });
 
 
 });
