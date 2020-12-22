@@ -32,8 +32,8 @@ const RandomToken = require("./RandomToken");
 //     }
 // });
 app.use(rateLimit({
-    windowMs: 5 * 1000, // 30 sec
-    max: 5
+    windowMs: 1 * 1000, // 30 sec
+    max: 8
 }))
 app.use(require('cors')());
 app.use(bodyParser.json());       // to support JSON-encoded bodies
