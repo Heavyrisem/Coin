@@ -109,7 +109,6 @@ class Main extends React.Component {
     });
     
     this.state.serverSocket.on('version', () => {
-      console.log("res", Config.version);
       this.state.serverSocket.emit('version', Config.version);
     })
 
