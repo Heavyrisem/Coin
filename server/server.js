@@ -72,7 +72,7 @@ io.on("connection", client => {
 
     ConnectedSocketCounter++;
     console.log("New connect From ", client.handshake.address, ConnectedSocketCounter);
-    client.sned("version");
+    client.send("version");
 
     DB.query(`SELECT * FROM coinValue ORDER BY id DESC limit 5`, (err, rows) => {
         if (err) return Log.writeLog("System", "Error", "coinValue 데이터베이스 조회 오류");
