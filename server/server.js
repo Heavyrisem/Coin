@@ -72,7 +72,7 @@ io.on("connection", client => {
 
     ConnectedSocketCounter++;
     console.log("New connect From ", client.handshake.address, ConnectedSocketCounter);
-    client.send("version");
+    client.emit("version");
 
     DB.query(`SELECT * FROM coinValue ORDER BY id DESC limit 5`, (err, rows) => {
         if (err) return Log.writeLog("System", "Error", "coinValue 데이터베이스 조회 오류");
@@ -89,7 +89,7 @@ io.on("connection", client => {
     let disconnectTimer;
     let checkVersion = setInterval(() => {
         console.log("asking version", client.handshake.address);
-        client.send("version");
+        client.emit("version");
         disconnectTimer = setTimeout(() => {
             console.log(client.handshake.address, "Not Responding For asking Version");
             client.disconnect();
@@ -100,7 +100,7 @@ io.on("connection", client => {
     client.on("version", ver => {
         if (ver != Client_VER) {
             console.log("Wrong Version Response From", client.handshake.address, "With", ver);
-            client.send("refresh");
+            client.emit("refresh");
             client.disconnect();
         } else {
             console.log("Version Response From", client.handshake.address, "With", ver);

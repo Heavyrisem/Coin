@@ -108,9 +108,10 @@ class Main extends React.Component {
       console.log("connected");
     });
     
-    // this.state.serverSocket.on('version', () => {
-    //   // this.state.serverSocket.emit('version', Config.version);
-    // })
+    this.state.serverSocket.on('version', () => {
+      console.log("res", Config.version);
+      this.state.serverSocket.emit('version', Config.version);
+    })
 
     this.state.serverSocket.on('refresh', () => {
       window.location.reload();
