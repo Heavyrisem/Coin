@@ -84,12 +84,13 @@ io.on("connection", client => {
 
 
     let disconnectTimer;
-    setInterval(() => {
+    let checkVersion = setInterval(() => {
         client.emit("version", undefined);
         disconnectTimer = setTimeout(() => {
             console.log(client.id, "Not Responding For asking Version");
             client.disconnect();
-        }, 5000);
+            clearInterval(checkVersion);
+        }, 500);
     }, 3000);
 
     client.on("version", ver => {
