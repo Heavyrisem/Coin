@@ -120,6 +120,7 @@ io.on("connection", client => {
     })
     
     client.on("disconnect", () => {
+        clearInterval(checkVersion);
         ConnectedSocketCounter--;
     });
 
