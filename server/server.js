@@ -32,7 +32,7 @@ const RandomToken = require("./RandomToken");
 //     }
 // });
 app.use(rateLimit({
-    windowMs: 30 * 1000, // 30 sec
+    windowMs: 120 * 1000, // 30 sec
     max: 30
 }))
 app.use(require('cors')());
