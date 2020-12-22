@@ -70,7 +70,7 @@ app.use(express.static('../build'));
 let ConnectedSocketCounter = 0;
 io.on("connection", client => {
     ConnectedSocketCounter++;
-    console.log(ConnectedSocketCounter, "동시 접속자 수");
+    console.log("New connect From ", client.handshake.address, ConnectedSocketCounter);
     DB.query(`SELECT * FROM coinValue ORDER BY id DESC limit 5`, (err, rows) => {
         if (err) return Log.writeLog("System", "Error", "coinValue 데이터베이스 조회 오류");
         if (!rows.length) return;
