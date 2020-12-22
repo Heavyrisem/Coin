@@ -157,7 +157,7 @@ function calculateCoinValue() {
     rand += parseInt(coinvalue);
 
     if (rand >= MaximunCoinValue) {
-        rand += coinvalue / RandomData(5, 2);
+        rand = coinvalue / RandomData(5, 2);
         console.log("Maximum Value Exceed", rand);
     }
 
