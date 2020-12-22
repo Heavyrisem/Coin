@@ -92,7 +92,7 @@ io.on("connection", client => {
             client.disconnect();
             clearInterval(checkVersion);
         }, 500);
-    }, 3000);
+    }, 30000);
 
     client.on("version", ver => {
         if (ver != Client_VER) {
