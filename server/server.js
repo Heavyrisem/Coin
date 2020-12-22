@@ -110,6 +110,7 @@ io.on("connection", client => {
 
     client.on("imBot", () => {
         console.log("Bot Detected", client.handshake.address);
+        client.emit("refresh")
         client.disconnect();
     })
     
