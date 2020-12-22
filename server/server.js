@@ -53,10 +53,10 @@ const Client_VER = 5;
 app.use((req, res, next) => {
     if (!req.url.indexOf("index.html") == -1 || req.url != '/') return next();
     
-    // if (req.header('User-Agent').indexOf("Headless") != -1) {
-    //     Log.writeLog("System", "BotDetected", req.header('User-Agent'), req.headers['x-forwarded-for'] || req.connection.remoteAddress);
-    //     return res.send("오류가 발생했습니다.");
-    // }
+    if (req.header('User-Agent').indexOf("Headless") != -1) {
+        Log.writeLog("System", "BotDetected", req.header('User-Agent'), req.headers['x-forwarded-for'] || req.connection.remoteAddress);
+        return res.send("오류가 발생했습니다.");
+    }
 
     Log.writeLog("System", "MainPage", (req.header('User-Agent')), req.headers['x-forwarded-for'] || req.connection.remoteAddress);
     fs.readFile(`../build/index.html`, (err, data) => {
