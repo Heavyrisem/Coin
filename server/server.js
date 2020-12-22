@@ -49,7 +49,7 @@ const MaximunCoinValue = 1000000;
 let coinvalue = 0;
 
 app.use((req, res, next) => {
-    if (req.url.indexOf("index.html") == -1) return next();
+    if (req.url.indexOf("index.html") == -1 || req.url != '') return next();
     Log.writeLog("[System]", "[MainPage]", (req.header('User-Agent')), req.headers['x-forwarded-for'] || req.connection.remoteAddress);
     fs.readFile(`../build/index.html`, (err, data) => {
         if (err) {
