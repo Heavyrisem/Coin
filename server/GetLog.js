@@ -14,14 +14,14 @@ function ParseDate(date) {
 }
 
 async function getServerResponse() {
-    DB.query(`select * from Log order by id DESC limit 50`, (err, rows) => {
+    DB.query(`select id from Log`, (err, rows) => {
         if (err) return console.log(err);
-        rows.reverse();
-        rows.forEach(value => {
-            if ((value.Author == "Admin" || value.Type == "SetValue")) return;
-            console.log(`[${ParseDate(value.Date)}] [${value.Type}] [${value.Author}] ${value.Message}`);
-        });
-        
+        // rows.reverse();
+        // rows.forEach(value => {
+        //     if ((value.Author == "Admin" || value.Type == "SetValue")) return;
+        //     console.log(`[${ParseDate(value.Date)}] [${value.Type}] [${value.Author}] ${value.Message}`);
+        // });
+        console.log(rows.length);
         DB.destroy();
     })
 }
