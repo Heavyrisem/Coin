@@ -32,7 +32,7 @@ const RandomToken = require("./RandomToken");
 //     }
 // });
 app.use(rateLimit({
-    windowMs: 1 * 1000, // 30 sec
+    windowMs: 3 * 1000, // 30 sec
     max: 8
 }))
 app.use(require('cors')());
@@ -106,6 +106,11 @@ io.on("connection", client => {
             console.log("Version Response From", client.handshake.address, "With", ver);
             disconnectTimer = clearTimeout(disconnectTimer);
         }
+    })
+
+    client.on("imBot", () => {
+        console.log("Bot Detected", client.handshake.address);
+        client.disconnect();
     })
     
     client.on("disconnect", () => {

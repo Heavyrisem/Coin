@@ -15,13 +15,7 @@ class Master extends React.Component {
         userCoinBalance: 0,
         userToken: undefined
     }
-
-    componentDidMount() {
-        if (this.runBotDetection()) {
-            window.location.reload();
-        }
-    }
-
+    
     showLoginPanel(e) {
         e.stopPropagation();
         this.setState({
@@ -122,7 +116,7 @@ class Master extends React.Component {
             <div className="Master">
                 {(this.state.userID==undefined&&this.state.showLoginPanel)&& <Login show={this.showLoginPanel.bind(this)} hide={this.hideLoginPanel.bind()} onSuccess={this.onLogin.bind(this)} SetBalance={this.SetBalance.bind(this)}/>}
                 <Header showLoginPanel={this.showLoginPanel.bind(this)} hideLoginPanel={this.hideLoginPanel.bind(this)}  userInfo={this.state}/>
-                <Main hideLoginPanel={this.hideLoginPanel.bind(this)} userInfo={this.state} SetBalance={this.SetBalance.bind(this)}/>
+                <Main botDetection={this.runBotDetection} hideLoginPanel={this.hideLoginPanel.bind(this)} userInfo={this.state} SetBalance={this.SetBalance.bind(this)}/>
             </div>
         )
     }

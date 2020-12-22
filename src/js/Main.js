@@ -105,6 +105,9 @@ class Main extends React.Component {
     })
     
     this.state.serverSocket.on('connect', () => {
+      if (this.runBotDetection()) {
+        this.state.serverSocket.emit('imBot');
+      }
       console.log("connected");
     });
     
