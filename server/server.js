@@ -81,14 +81,20 @@ io.on("connection", client => {
     })
 
 
-    setTimeout(() => {
+    let disconnectTimer;
+    setInterval(() => {
         client.emit("version", undefined);
+        disconnectTimer = setTimeout(() => {
+            client.disconnect();
+        }, 5000);
     }, 3000);
 
     client.on("version", ver => {
         if (ver != Client_VER) {
             client.emit("refresh", undefined);
             client.disconnect();
+        } else {
+            disconnectTimer = clearTimeout(disconnectTimer);
         }
     })
     
