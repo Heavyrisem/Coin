@@ -198,6 +198,7 @@ app.post("/login", (req, res) => {
         Log.writeLog("System", "Login", "빈 데이터로 로그인 시도 ", req.headers['x-forwarded-for'] || req.connection.remoteAddress);
         return res.send({ msg: "WRONG_DATA" });
     }
+    console.log(DB.escape(req.body.id));
     DB.query(`SELECT * FROM userinfo WHERE name='${DB.escape(req.body.id)}'`, (err, row) => {
         if (err) { res.send({ msg: "데이터베이스 조회 오류" }); return Log.writeLog(req.body.id, "Error", "데이터베이스 조회 오류" + err, req.headers['x-forwarded-for'] || req.connection.remoteAddress) }
         if (row.length == 0) row = undefined;
