@@ -191,7 +191,9 @@ function calculateCoinValue() {
     coinvalue = rand;
 
     io.emit("CoinValue", { coinValue: coinvalue, updateTime: `${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`, nextUpdate: UpdateTick, type: type });
-    DB.query(`INSERT INTO coinValue(value, date) VALUES('${coinvalue}', '${now}')`);
+    DB.query(`INSERT INTO coinValue(value, date) VALUES('${coinvalue}', '${now}')`, (err) => {
+        if (err) return Log.writeLog("System", "DataBaseERROR", "Error while Writing CoinValue Data " + err, "");
+    });
     setTimeout(calculateCoinValue, UpdateTick);
 
 }
