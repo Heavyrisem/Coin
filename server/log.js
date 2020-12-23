@@ -14,7 +14,7 @@ DB.connect();
 
 function GetCurrentTime() {
     let now = new Date();
-    return `${now.getFullYear()}-${now.getMonth()+1}-${now.getDate()} ${now.getHours()}.${now.getMinutes()}.${now.getSeconds()}`;
+    return `${now.getFullYear()}-${now.getMonth()+1}-${now.getDate()} ${(now.getHours()<10)? '0'+now.getHours(): now.getHours()}.${(now.getMinutes()<10)? '0'+now.getMinutes(): now.getMinutes()}.${(now.getSeconds()<10)? '0'+now.getSeconds(): now.getSeconds()}`;
 }
 
 function writeLog(Author, Type, Message, Ip) {

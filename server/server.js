@@ -3,11 +3,6 @@ const Config = require("./Config.json")
 const express = require('express');
 const app = express();
 const rateLimit = require("express-rate-limit");
-// require('greenlock-express').init({
-//     packageRoot: '../',
-//     configDir: './greenlock.d',
-//     maintainerEmail: 'pyo1748@gmail.com',
-// }).serve(app);
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 const bodyParser = require('body-parser');
@@ -22,15 +17,9 @@ const DB = mysql.createConnection(Config.DB);
 DB.connect();
 
 const RandomToken = require("./RandomToken");
+const BlockCountry = require("./Middle/BlockCounty");
 
-// const sqlite3 = require('sqlite3').verbose();
-// const DB = new sqlite3.Database('./DB.db', sqlite3.OPEN_READWRITE, err => { // d
-//     if (err) {
-//         console.log(`Error while Opening DB ${err}`);
-//     } else {
-//         console.log(`Database Connected`);
-//     }
-// });
+app.use(BlockCountry);
 app.use(rateLimit({
     windowMs: 60 * 1000, // 30 sec
     max: 30
@@ -41,7 +30,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
     extended: true
 }));
 
-const PORT = 80;
+const PORT = 8888;
 const UpdateTick = 8500;
 const MinimumCoinValue = 10000;
 const DefaultCoinValue = 100000;

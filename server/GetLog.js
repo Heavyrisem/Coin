@@ -14,16 +14,26 @@ function ParseDate(date) {
 }
 
 async function getServerResponse() {
-    DB.query(`select * from Log where Author='System' order by id DESC limit 100`, (err, rows) => {
-        if (err) return console.log(err);
-        rows.reverse();
-        rows.forEach(value => {
-            if ((value.Author == "Admin" || value.Type == "SetValue")) return;
-            console.log(`[${ParseDate(value.Date)}] [${value.Type}] [${value.Author}] ${value.Message} ${value.Ip}`);
+    DB.query(`SELECT * FROM coinValue ORDER BY id DESC limit 5`, (err, rows) => {
+        if (err) return Log.writeLog("System", "Error", "coinValue 데이터베이스 조회 오류");
+        if (!rows.length) return;
+        rows = rows.reverse();
+
+        rows.forEach(row => {
+            let date = new Date(row.date);
+            console.log(row.value, `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`);
         });
-        
-        DB.destroy();
     })
+    // DB.query(`select * from Log where Author='System' order by id DESC limit 100`, (err, rows) => {
+    //     if (err) return console.log(err);
+    //     rows.reverse();
+    //     rows.forEach(value => {
+    //         if ((value.Author == "Admin" || value.Type == "SetValue")) return;
+    //         console.log(`[${ParseDate(value.Date)}] [${value.Type}] [${value.Author}] ${value.Message} ${value.Ip}`);
+    //     });
+        
+    //     DB.destroy();
+    // })
 }
 
 
