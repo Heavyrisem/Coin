@@ -10,7 +10,7 @@ function BlockCountry(req, res, next) {
 
     if (geoipInfo != undefined && ALLOWLIST.indexOf(geoipInfo.country) == -1) {
         Log.writeLog("System", "BlockOtherCountry", `${geoipInfo.country} is Blocked By ExpreeMiddleWare`, ip);
-        return res.send("Cannot Access the Web Page");
+        return;
     } else {
         if (geoipInfo != undefined && geoipInfo.country != 'KR') Log.writeLog("System", "CountryInfo", `${geoipInfo.country}`, ip);
         return next();
