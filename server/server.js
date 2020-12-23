@@ -50,6 +50,12 @@ let coinvalue = 0;
 
 const Client_VER = 5;
 
+let KeepAliveDB = setInterval(() => {
+    DB.query(`SELECT 1;`);
+    Log.writeLog("System", "HartBeatDB", "Send HartBeat to DataBase", "");
+}, 1000 * 10 * 60); // Every 10 min
+
+
 app.use((req, res, next) => {
     if (!req.url.indexOf("index.html") == -1 || req.url != '/') return next();
     
