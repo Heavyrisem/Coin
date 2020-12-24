@@ -2,7 +2,7 @@ const geoip = require('geoip-country');
 const Log = require('../log');
 
 const BLACKLIST = ['CN', 'TW'];
-const ALLOWLIST = ['KR', '35.237.4.214'];
+const ALLOWLIST = ['KR', '35.237.4.214', '35.196.132.85'];
 
 function BlockCountry(req, res, next) {
     let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
