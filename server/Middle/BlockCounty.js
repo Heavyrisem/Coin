@@ -2,11 +2,16 @@ const geoip = require('geoip-country');
 const Log = require('../log');
 
 const BLACKLIST = ['CN', 'TW'];
-const ALLOWLIST = ['KR'];
+const ALLOWLIST = ['KR', '35.237.4.214'];
 
 function BlockCountry(req, res, next) {
     let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     let geoipInfo = geoip.lookup(ip);
+
+    if (ALLOWLIST.indexOf(ip) != -1) {
+        Log.writeLog("System", "AllowOtherCountry", `${geoipInfo.country} is Allowed By ALLOWLIST`, ip);
+        return next();
+    }
 
     if (geoipInfo != undefined && ALLOWLIST.indexOf(geoipInfo.country) == -1) {
         Log.writeLog("System", "BlockOtherCountry", `${geoipInfo.country} is Blocked By ExpreeMiddleWare`, ip);
