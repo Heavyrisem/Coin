@@ -14,7 +14,7 @@ function BlockCountry(req, res, next) {
         return next();
     }
 
-    if ((geoipInfo != undefined && ALLOWLIST.indexOf(geoipInfo.country) == -1) && ALLOWHEADER.indexOf(req.hader('User-Agent')) == -1) {
+    if ((geoipInfo != undefined && ALLOWLIST.indexOf(geoipInfo.country) == -1) && ALLOWHEADER.indexOf(req.header('User-Agent')) == -1) {
         Log.writeLog("System", "BlockOtherCountry", `${geoipInfo.country} is Blocked By ExpreeMiddleWare, ${(req.header('User-Agent'))&& req.header('User-Agent')}`, ip);
         return;
     } else {
