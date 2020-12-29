@@ -3,7 +3,7 @@
 // const KEY = "HEAVYRISEM";
 
 const Config = require('./Config.json');
-const mysql = require('mysql');
+const mysql = require('mysql2');
 const DB = mysql.createConnection(Config.DB);
 DB.connect();
 

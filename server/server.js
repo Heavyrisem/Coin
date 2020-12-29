@@ -12,7 +12,7 @@ const fs = require('fs');
 const Log = require('./log');
 const Consolelog = require('./consolelog').init('server');
 
-const mysql = require('mysql');
+const mysql = require('mysql2');
 const DB = mysql.createConnection(Config.DB);
 DB.connect();
 
