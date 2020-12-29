@@ -3,6 +3,7 @@ const Log = require('../log');
 
 const BLACKLIST = ['CN', 'TW'];
 const ALLOWLIST = ['KR', '::ffff:35.237.4.214', '::ffff:35.196.132.85'];
+const ALLOWHEADER = ['Discordbot/2.0; +https://discordapp.com'];
 
 function BlockCountry(req, res, next) {
     let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
@@ -13,7 +14,7 @@ function BlockCountry(req, res, next) {
         return next();
     }
 
-    if (geoipInfo != undefined && ALLOWLIST.indexOf(geoipInfo.country) == -1) {
+    if ((geoipInfo != undefined && ALLOWLIST.indexOf(geoipInfo.country) == -1) && ALLOWHEADER.indexOf(req.hader('User-Agent')) == -1) {
         Log.writeLog("System", "BlockOtherCountry", `${geoipInfo.country} is Blocked By ExpreeMiddleWare, ${(req.header('User-Agent'))&& req.header('User-Agent')}`, ip);
         return;
     } else {
