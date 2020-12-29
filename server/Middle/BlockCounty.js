@@ -2,7 +2,7 @@ const geoip = require('geoip-country');
 const Log = require('../log');
 
 const BLACKLIST = ['CN', 'TW'];
-const ALLOWLIST = ['KR', '::ffff:35.237.4.214', '::ffff:35.196.132.85'];
+const ALLOWLIST = ['KR'];
 const ALLOWHEADER = ['Discordbot/2.0; +https://discordapp.com'];
 
 function BlockCountry(req, res, next) {
