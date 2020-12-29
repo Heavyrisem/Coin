@@ -25,13 +25,13 @@ async function getServerResponse() {
     //     });
     // })
     let msg = 'Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0)';
-    DB.query(`select * from Log WHERE Type='MainPage'`, (err, rows) => {
+    DB.query(`select * from Log WHERE Type like '%Other%'`, (err, rows) => {
         if (err) return console.log(err);
         
-        // rows.forEach(value => {
-        //     if ((value.Author == "Admin" || value.Type == "SetValue")) return;
-        //     console.log(`[${ParseDate(value.Date)}] [${value.Type}] [${value.Author}] ${value.Message} ${value.Ip}`);
-        // });
+        rows.forEach(value => {
+            if ((value.Author == "Admin" || value.Type == "SetValue")) return;
+            console.log(`[${ParseDate(value.Date)}] [${value.Type}] [${value.Author}] ${value.Message} ${value.Ip}`);
+        });
         console.log(`로그 ${rows.length} 로드 완료`)   
         DB.destroy();
     })
