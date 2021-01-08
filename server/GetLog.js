@@ -25,7 +25,7 @@ async function getServerResponse() {
     //     });
     // })
     let msg = 'Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0)';
-    DB.query(`select * from Log WHERE Type like '%Other%'`, (err, rows) => {
+    DB.query(`select * from Log where Type like '%Other%'`, (err, rows) => {
         if (err) return console.log(err);
         
         rows.forEach(value => {

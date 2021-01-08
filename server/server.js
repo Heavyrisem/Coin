@@ -41,7 +41,7 @@ const Client_VER = 5;
 
 let KeepAliveDB = setInterval(() => {
     DB.query(`SELECT 1;`);
-    Log.writeLog("System", "HartBeatDB", "Send HartBeat to DataBase", "");
+    Log.writeLog("System", "HeartBeatDB", "Send HeartBeat to DataBase", "");
 }, 1000 * 10 * 60); // Every 10 min
 
 
