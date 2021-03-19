@@ -1,70 +1,63 @@
-# Getting Started with Create React App
+# Coin
+가격이 랜덤으로 조정되는 코인을 사고팔수 있는 가상 코인 거래소 입니다.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+사용자는 코인을 구매, 판매를 할수 있으며 코인의 가격은 실시간으로 서버에서 계산하여 가격을 정합니다.
 
-## Available Scripts
+실시간이 주요 기능인 만큼 서버의 부하와 코드의 편의성, 유지보수 등을 고려해 Socket.io로 데이터를 받아오도록 개발하였습니다.
 
-In the project directory, you can run:
+## Language
+Nodejs를 사용했습니다.
 
-### `npm start`
+프론트엔드에서 React를 연습삼아 선택하여 개발하다보니 자연스럽게 Nodejs를 백엔드에도 사용하게 되었고, 개발에 속도가 붙는 장점이 있었습니다.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## BackEnd
+백엔드는 Express.js를 사용했고 데이터베이스는 MySQL을 사용했습니다.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+가장 많이 써보았던 데이터베이스가 MySQL여서 이번에도 MySQL을 선택했습니다.
 
-### `npm test`
+### Log
+처음으로 서버에서 로그 처리를 해보았습니다.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+처음에는 console.log()로만 로그를 기록했지만, 시간이 지나거나 터미널이 종료되면 사라진다는 단점이 있었습니다.
 
-### `npm run build`
+그래서 console.log()를 지우고 텍스트 파일에 대신 기록하는 방법을 시도했습니다.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+나름 괜찮은 방법이였지만 로그를 확인하기 위해서는 서버에 연결하여 파일을 열어야 한다는 번거로움을 느꼈습니다.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+고민 끝에 파일로 저장하는 방식을 포기하고, 로그를 남기는 기능을 만들어 로그 타입, 로그 시각, 로그 내용 등등.. 을 데이터베이스에 기록함과 동시에 터미널 로그에도 같이 남기는 방식을 사용했습니다.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+이를 통해 간단한 코드만으로 데이터베이스에 연결하여 원하는 로그를 필터링하여 가져올 수 있고, 서버의 터미널에서도 확인 가능한 편리함도 얻었습니다.
 
-### `npm run eject`
+## FrontEnd
+프론트엔드는 React.js를 사용하였습니다.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Node.js로 진로를 잡았고, 모든 환경에서 Node.js를 사용할 수 있을 정도로 능숙해지고 싶어 프론트엔드를 React.js로 선택했습니다.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+실시간 가격의 표시는 Chart.js로 구현하였습니다. 처음 써보는 라이브러리라 조금 어려웠지만 공식 Documentation을 보고 차근차근 따라하며 해결해 나갔습니다.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## Problem
+개발을 진행하며, 테스트를 진행하며 많은 문제점들과 마주쳤습니다.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+가장 먼저 마주친 문제는 https를 지원하지 않아서 다른 사용자가 접속 시 계속 보안 경고가 뜨는 것이였습니다.
 
-## Learn More
+이를 해결하기 위해 SSL 관련 정보를 찾다가 CloudFlare을 발견하였습니다.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+하지만 사용중인 도메인을 CloudFlare에 등록하지 못하였고 결국 greenlock 모듈을 사용하여 https를 적용하였습니다.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+또 다른 문제로는 큰 수를 고려하지 않아 생긴 문제가 있었습니다.
 
-### Code Splitting
+사용자의 코인, 소지금 정보를 모두 정수 형태로 저장하였는데, 최대로 표현 가능한 수를 넘어가게 되면 오버플로우가 발생하여 소지금이 음수로 떨어지는 문제가 있었습니다.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+결국 데이터베이스의 스키마를 수정하여 정수형태에서 문자열 형태로 저장하도록 변경하였습니다.
 
-### Analyzing the Bundle Size
+마지막으로는 크롤링 봇의 문제였습니다.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+도메인을 만들고 웹상에 공개를 하게 되니 전세계 여러 국가에서 엄청나게 많은 접속 시도가 생겨났습니다.
 
-### Making a Progressive Web App
+![image](https://user-images.githubusercontent.com/46806498/111749423-1b28c380-88d5-11eb-8ea0-3602f93fcaf2.png)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+하지만 이렇게 많은 접속들 중 정상적인 경로로 사람이 접속한 경우는 하나도 없었습니다.
 
-### Advanced Configuration
+웹페이지에 접속을 하고 나면 Socket.io도 같이 연결되어야 하지만 웹페이지의 요청만 존재하고 Socket.io의 연결 요청은 하나도 없었습니다 즉 봇이거나 크롤링 요청이라는 것입니다.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+이런 요청이 하루에도 수백 수천건씩 계속되자 서버 리소스의 낭비가 심해졌고 하는수 없이 User-Agent를 확인하여 걸러내어 차단하는 방법을 사용했습니다.
