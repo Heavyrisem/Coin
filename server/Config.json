@@ -1,0 +1,9 @@
+{
+    "DB": {
+        "host": "kunrai.kro.kr",
+        "user": "",
+        "password": "",
+        "database": "Coin"
+    },
+    "key": ""
+}
