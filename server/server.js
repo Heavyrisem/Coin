@@ -33,7 +33,7 @@ app.use(express.urlencoded({     // to support URL-encoded bodies
 const PORT = 7800;
 const UpdateTick = 8500;
 const MinimumCoinValue = 10000;
-const DefaultCoinValue = 100000;
+const DefaultCoinValue = 180000;
 const MaximunCoinValue = 1000000;
 let coinvalue = 0;
 
@@ -138,12 +138,12 @@ function calculateCoinValue() {
     // rand = DefaultCoinValue RandomData()
     switch (RandomData(0, 2)) {
         case 0: {
-            rand = Math.abs(Math.sin(coinvalue) * RandomData(40, 65) * 40);
+            rand = Math.abs(Math.sin(coinvalue) * RandomData(40, 65) * 50);
             type = "sin";
             break;
         }
         case 1: {
-            rand = Math.abs(Math.tan(coinvalue) * RandomData(30, 50) * 40);
+            rand = Math.abs(Math.tan(coinvalue) * RandomData(30, 50) * 50);
             type = "tan";
             break;
         }
