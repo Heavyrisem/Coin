@@ -117,7 +117,7 @@ class Trade extends React.Component {
     }
 
     Fee(m) {
-return parseInt(m - m * 10 / 100); // 10%수수료
+        return parseInt(m - m * 10 / 100); // 10%수수료
     }
 
     render() {
@@ -125,7 +125,7 @@ return parseInt(m - m * 10 / 100); // 10%수수료
             <> 
                 <span className="Title">판매</span>
                 <input className="InputValue" type="number" ref={e=>{this.InputValue = e}} onChange={()=>{this.setState({message: undefined});console.log("close")}} placeholder="판매할 코인의 수를 입력하세요" />
-                <span className="CalculatedValue">{this.state.message? this.state.message : this.InputValue.value? unit.Comma(Fee(parseInt(this.InputValue.value) * this.props.CoinValue))+" KRW": "받을 금액 KRW"} </span>
+                <span className="CalculatedValue">{this.state.message? this.state.message : this.InputValue.value? unit.Comma(this.Fee(parseInt(this.InputValue.value) * this.props.CoinValue))+" KRW": "받을 금액 KRW"} </span>
                 <div className="TradeBtns">
                     <div className="TradeSubmit" style={{color: 'rgb(146, 146, 146)', backgroundColor: 'rgb(231, 231, 231)'}} onClickCapture={this.FillMaxSell.bind(this)}>전체 입력</div>
                     <div className="TradeSubmit" onClickCapture={this.Sell.bind(this)}>확인</div>
