@@ -138,12 +138,12 @@ function calculateCoinValue() {
     // rand = DefaultCoinValue RandomData()
     switch (RandomData(0, 2)) {
         case 0: {
-            rand = Math.abs(Math.sin(coinvalue) * RandomData(40, 65) * 50);
+            rand = Math.abs(Math.sin(coinvalue) * RandomData(40, 65) * 100);
             type = "sin";
             break;
         }
         case 1: {
-            rand = Math.abs(Math.tan(coinvalue) * RandomData(30, 50) * 50);
+            rand = Math.abs(Math.tan(coinvalue) * RandomData(30, 50) * 100);
             type = "tan";
             break;
         }
