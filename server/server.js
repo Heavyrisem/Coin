@@ -349,7 +349,7 @@ app.post("/ranking", (req, res) => {
             })
 
             if (req.body.id != undefined) {
-                Log.writeLog(req.body.id, "GetRanking", "순위 조회", req.headers['x-forwarded-for'] || req.connection.remoteAddress);
+                // Log.writeLog(req.body.id, "GetRanking", "순위 조회", req.headers['x-forwarded-for'] || req.connection.remoteAddress);
                 rows.some((userdata, idx) => {
                     if (userdata.name == req.body.id) {
                         res.send({ ranking: result, currentRank: idx + 1, balance: parseInt(userdata.MoneyBalance) + (currentvalue * parseInt(userdata.CoinBalance)) });
