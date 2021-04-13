@@ -37,7 +37,7 @@ const DefaultCoinValue = 180000;
 const MaximunCoinValue = 1000000;
 let coinvalue = 0;
 
-const Client_VER = 7;
+const Client_VER = 8;
 
 let KeepAliveDB = setInterval(() => {
     DB.query(`SELECT 1;`);
