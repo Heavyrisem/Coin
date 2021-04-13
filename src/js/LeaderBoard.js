@@ -17,7 +17,7 @@ class LeaderBoard extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
-        if (this.props.userID != prevProps.userID) {
+        if (this.props.userID != prevProps.userID || this.props.Refresh != prevProps.Refresh) {
             console.log("Get New Leaderboard");
             this.GetLeaderBoard();
         }

@@ -83,7 +83,8 @@ class Main extends React.Component {
     wiseSaying: {
         Message: undefined,
         Author: undefined
-    }
+    },
+	Refresh: false
   }
 
   componentDidMount() {
@@ -173,6 +174,7 @@ class Main extends React.Component {
 
     this.state.chartoption.options.scales.yAxes[0].ticks.stepSize = tmp;
     this.state.chart.update();
+	this.state.Refresh = !this.state.Refresh;
   }
   nextUpdateTimer() {
     if (this.state.nextChartUpdate > 0 && this.state.nextChartUpdate) {
@@ -263,7 +265,7 @@ class Main extends React.Component {
 
           <div className="card">
               <span>
-                내 코인: {(this.props.userInfo.userCoinBalance!=undefined)? unit.Comma(this.props.userInfo.userCoinBalance)+" JG": "로그인해 주세요"}
+                내 코인: {(this.props.userInfo.userCoinBalance!=undefined)? unit.Comma(this.props.userInfo.userCoinBalance)+" DY": "로그인해 주세요"}
               </span>
           </div>          
           <div className="card">
@@ -273,7 +275,7 @@ class Main extends React.Component {
           </div></>)
         }
 
-        <LeaderBoard userID={this.props.userInfo.userID} />
+        <LeaderBoard Refresh={this.state.Refresh} userID={this.props.userInfo.userID} />
 
         <div className="card">
           <div className="Say">"{this.state.wiseSaying.Message}"</div>
