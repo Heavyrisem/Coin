@@ -21,8 +21,8 @@ const BlockCountry = require("./Middle/BlockCounty");
 
 app.use(BlockCountry);
 app.use(rateLimit({
-    windowMs: 60 * 1000, // 30 sec
-    max: 30
+    windowMs: 10 * 1000, // 30 sec
+    max: 10
 }))
 app.use(require('cors')());
 app.use(express.json());       // to support JSON-encoded bodies
