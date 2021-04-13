@@ -25,12 +25,12 @@ app.use(rateLimit({
     max: 30
 }))
 app.use(require('cors')());
-app.use(bodyParser.json());       // to support JSON-encoded bodies
-app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
+app.use(express.json());       // to support JSON-encoded bodies
+app.use(express.urlencoded({     // to support URL-encoded bodies
     extended: true
 }));
 
-const PORT = 80;
+const PORT = 7800;
 const UpdateTick = 8500;
 const MinimumCoinValue = 10000;
 const DefaultCoinValue = 100000;

@@ -1,6 +1,6 @@
 {
     "DB": {
-        "host": "kunrai.kro.kr",
+        "host": "localhost",
         "user": "",
         "password": "",
         "database": "Coin"
