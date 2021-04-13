@@ -2,7 +2,7 @@ const Config = require("./Config.json")
 
 const express = require('express');
 const app = express();
-const rateLimit = require("express-rate-limit");
+// const rateLimit = require("express-rate-limit");
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 const bodyParser = require('body-parser');
@@ -20,10 +20,10 @@ const RandomToken = require("./RandomToken");
 const BlockCountry = require("./Middle/BlockCounty");
 
 app.use(BlockCountry);
-app.use(rateLimit({
-    windowMs: 10 * 1000, // 30 sec
-    max: 10
-}))
+// app.use(rateLimit({
+//     windowMs: 10 * 1000, // 30 sec
+//     max: 10
+// }))
 app.use(require('cors')());
 app.use(express.json());       // to support JSON-encoded bodies
 app.use(express.urlencoded({     // to support URL-encoded bodies
