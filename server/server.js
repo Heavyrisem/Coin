@@ -35,6 +35,9 @@ const UpdateTick = 8500;
 const MinimumCoinValue = 10000;
 const DefaultCoinValue = 180000;
 const MaximunCoinValue = 1000000;
+const Fee = (m) => {
+    return parseInt(m - m * 10 / 100); // 10%수수료
+};
 let coinvalue = 0;
 
 const Client_VER = 8;
@@ -261,7 +264,7 @@ app.post("/buy", (req, res) => {
                 DB.query(`UPDATE userinfo SET MoneyBalance=${DB.escape(parseInt(row.MoneyBalance) - preCal)}, CoinBalance=${DB.escape(parseInt(row.CoinBalance) + parseInt(req.body.Amount))} WHERE name=${DB.escape(req.body.id)}`, err => {
                     if (err) { res.send({ msg: "데이터베이스 조회 오류" }); return Log.writeLog(req.body.id, "Error", "데이터베이스 조회 오류" + err, req.headers['x-forwarded-for'] || req.connection.remoteAddress) }
 
-                    Log.writeLog(req.body.id, "Trade", `${req.body.Amount} 코인 구매, ${parseInt(row.CoinBalance) + parseInt(req.body.Amount)} JG, ${parseInt(row.MoneyBalance) - preCal} KRW, ${coinvalue}`, req.headers['x-forwarded-for'] || req.connection.remoteAddress);
+                    Log.writeLog(req.body.id, "Trade", `${req.body.Amount} 코인 구매, ${parseInt(row.CoinBalance) + parseInt(req.body.Amount)} DY, ${parseInt(row.MoneyBalance) - preCal} KRW, ${coinvalue}`, req.headers['x-forwarded-for'] || req.connection.remoteAddress);
                     return res.send({ CoinBalance: parseInt(row.CoinBalance) + parseInt(req.body.Amount), MoneyBalance: parseInt(row.MoneyBalance) - preCal });
                 });
             } else {
@@ -288,7 +291,7 @@ app.post("/sell", (req, res) => {
         else row = row[0];
         if (row) {
 
-            let preCal = coinvalue * req.body.Amount;
+            let preCal = Fee(coinvalue * req.body.Amount);
 
             if (parseInt(row.CoinBalance) >= parseInt(req.body.Amount)) {
                 DB.query(`UPDATE userinfo SET MoneyBalance=${DB.escape(parseInt(row.MoneyBalance) + preCal)}, CoinBalance=${DB.escape(parseInt(row.CoinBalance) - parseInt(req.body.Amount))} WHERE name=${DB.escape(req.body.id)}`, err => {
