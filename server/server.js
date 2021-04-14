@@ -40,7 +40,7 @@ const Fee = (m) => {
 };
 let coinvalue = 0;
 
-const Client_VER = 8;
+const Client_VER = 9;
 
 let KeepAliveDB = setInterval(() => {
     DB.query(`SELECT 1;`);
@@ -133,60 +133,67 @@ io.on("connection", client => {
 function calculateCoinValue() {
     let now = new Date();
     let rand = 0;
-    let type;
+    // let type;
 
-    let nextDir = RandomData(0, 2); // true is UP false is DOWN
+    let NextDir = RandomData(0, 2); // true is UP false is DOWN
+    let Perc = Math.random() * (50 - 3) + 3; // %
+
+    coinvalue += (NextDir)? (coinvalue * Perc / 100) : (-(coinvalue * Perc / 100));
+    
+
     // console.log(nextDir)
     // 30+@, 30+(@*-1)
     // rand = DefaultCoinValue RandomData()
-    switch (RandomData(0, 2)) {
-        case 0: {
-            rand = Math.abs(Math.sin(coinvalue) * RandomData(40, 65) * 100);
-            type = "sin";
-            break;
-        }
-        case 1: {
-            rand = Math.abs(Math.tan(coinvalue) * RandomData(30, 50) * 100);
-            type = "tan";
-            break;
-        }
-    }
+    // switch (RandomData(0, 2)) {
+    //     case 0: {
+    //         rand = Math.abs(Math.sin(coinvalue) * RandomData(40, 65) * 100);
+    //         type = "sin";
+    //         break;
+    //     }
+    //     case 1: {
+    //         rand = Math.abs(Math.tan(coinvalue) * RandomData(30, 50) * 100);
+    //         type = "tan";
+    //         break;
+    //     }
+    // }
 
     // console.log("\n조정 전", rand);
-    if (!nextDir) {
-        if (coinvalue >= MaximunCoinValue / 3) { rand *= 1; } // 상한선의 1/3 이상일때, 100% 감소
-        else { rand *= 0.7; } // 1/3 미만일 경우 30% 감소
-        if (coinvalue >= MaximunCoinValue - MaximunCoinValue / 4) { rand *= 3.0; } // 상한선의 2/3 이상일때 130%감소
-        if (coinvalue <= DefaultCoinValue) { rand = rand * 0.1; }
-        //  {rand *= 0.5; //상한선의 1/3 이하일때, 50% 감소후 하락
-        if (RandomData(0, 2)) rand *= 1.3;
+    // if (!nextDir) {
+    //     if (coinvalue >= MaximunCoinValue / 3) { rand *= 1; } // 상한선의 1/3 이상일때, 100% 감소
+    //     else { rand *= 0.7; } // 1/3 미만일 경우 30% 감소
+    //     if (coinvalue >= MaximunCoinValue - MaximunCoinValue / 4) { rand *= 3.0; } // 상한선의 2/3 이상일때 130%감소
+    //     if (coinvalue <= DefaultCoinValue) { rand = rand * 0.1; }
+    //     //  {rand *= 0.5; //상한선의 1/3 이하일때, 50% 감소후 하락
+    //     if (RandomData(0, 2)) rand *= 1.3;
 
-        rand *= -1;
-    } else {
-        if (coinvalue >= MaximunCoinValue / 3) { rand *= 1; } //상한선의 1/3 이상일때, 100% 증가
-        else { rand *= 1.3; } // 1/3 미만일 경우 130% 증가
-        if (coinvalue <= DefaultCoinValue) { rand *= 5; } //기본가격보다 낮을때 30% 추가
-        if (coinvalue >= MaximunCoinValue - MaximunCoinValue / 3) { rand *= 0.7; } // 상한선의 2/3 이상일때 70% 증가
-        { rand *= 1.5; } //상한선의 1/3 이하일때, 50% 추가후 증가
-    }
+    //     rand *= -1;
+    // } else {
+    //     if (coinvalue >= MaximunCoinValue / 3) { rand *= 1; } //상한선의 1/3 이상일때, 100% 증가
+    //     else { rand *= 1.3; } // 1/3 미만일 경우 130% 증가
+    //     if (coinvalue <= DefaultCoinValue) { rand *= 5; } //기본가격보다 낮을때 30% 추가
+    //     if (coinvalue >= MaximunCoinValue - MaximunCoinValue / 3) { rand *= 0.7; } // 상한선의 2/3 이상일때 70% 증가
+    //     { rand *= 1.5; } //상한선의 1/3 이하일때, 50% 추가후 증가
+    // }
 
-    if (!RandomData(0, 101)) { rand = (coinvalue / 2) * -1; console.log("폭락") }
+    // if (!RandomData(0, 101)) { rand = (coinvalue / 2) * -1; console.log("폭락") }
     // console.log("조정 후", rand);
 
-    rand += parseInt(coinvalue);
+    // rand += parseInt(coinvalue);
 
-    if (rand >= MaximunCoinValue) {
-        rand = coinvalue / RandomData(5, 2);
-        console.log("Maximum Value Exceed", rand);
-    }
+    // if (rand >= MaximunCoinValue) {
+    //     rand = coinvalue / RandomData(5, 2);
+    //     console.log("Maximum Value Exceed", rand);
+    // }
 
 
     // rand = parseFloat(rand).toFixed(2)
-    rand = parseInt(rand);
-    if (rand < MinimumCoinValue) rand = MinimumCoinValue;
-    coinvalue = rand;
+    // rand = parseInt(rand);
+    // if (rand < MinimumCoinValue) rand = MinimumCoinValue;
+    // coinvalue = rand;
 
-    io.emit("CoinValue", { coinValue: coinvalue, updateTime: `${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`, nextUpdate: UpdateTick, type: type });
+    if (coinvalue <= MinimumCoinValue) coinvalue = MinimumCoinValue;
+
+    io.emit("CoinValue", { coinValue: coinvalue, updateTime: `${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`, nextUpdate: UpdateTick });
     DB.query(`INSERT INTO coinValue(value, date) VALUES('${coinvalue}', '${now}')`, (err) => {
         if (err) return Log.writeLog("System", "DataBaseERROR", "Error while Writing CoinValue Data " + err, "");
     });
