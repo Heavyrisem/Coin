@@ -212,7 +212,7 @@ function RandomData(min, max) {
 
 app.post("/getBalance", (req, res) => {
     if (req.body.Token) {
-        DB.query(`SELECT * FROM userinfo WHERE Toke=${DB.escape(req.body.Token)}`, (err, row) => {
+        DB.query(`SELECT * FROM userinfo WHERE Token=${DB.escape(req.body.Token)}`, (err, row) => {
             if (err) { res.send({msg: "데이터베이스 조회 오류"}); return Log.writeLog(req.body.id, "Error", "데이터베이스 조회 오류" + err, req.headers['x-forwarded-for'] || req.connection.remoteAddress) }
             if (row.length == 0) row = undefined;
             else row = row[0];
