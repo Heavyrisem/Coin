@@ -141,7 +141,7 @@ function calculateCoinValue() {
     coinvalue = parseInt(coinvalue);
     coinvalue = parseInt(coinvalue + (NextDir)? (parseInt(coinvalue * Perc / 100)) : (parseInt(-(coinvalue * Perc / 100))));
     
-    console.log(coinvalue);
+    console.log(coinvalue, Perc);
 
     // console.log(nextDir)
     // 30+@, 30+(@*-1)
