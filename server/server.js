@@ -138,7 +138,7 @@ function calculateCoinValue() {
     let NextDir = RandomData(0, 2); // true is UP false is DOWN
     let Perc = (Math.random() * (50 - 3) + 3).toFixed(2); // %
     console.log(coinvalue);
-    coinvalue += (NextDir)? (coinvalue * Perc / 100) : (-(coinvalue * Perc / 100));
+    coinvalue += (NextDir)? (parseInt(coinvalue * Perc / 100)) : (parseInt(-(coinvalue * Perc / 100)));
     
 
     // console.log(nextDir)
