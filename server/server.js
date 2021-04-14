@@ -138,7 +138,7 @@ function calculateCoinValue() {
     let NextDir = (coinvalue <= DefaultCoinValue) ? RandomData(0, 20) : RandomData(0, 2); // true is UP false is DOWN
     if (coinvalue >= MaximunCoinValue / 2)
         NextDir = (!RandomData(0, 3));
-    let Perc = Math.floor(Math.random() * (50 - 3)) + 3; // %
+    let Perc = (coinvalue <= MaximunCoinValue/2)? (Math.floor(Math.random() * (75 - 5)) + 5):(Math.floor(Math.random() * (50 - 3)) + 3); // %
     console.log((NextDir)? (parseInt(coinvalue * Perc / 100)) : (parseInt(-(coinvalue * Perc / 100))));
     coinvalue = parseInt(coinvalue);
     coinvalue = parseInt( coinvalue + ((NextDir)? (parseInt(coinvalue * Perc / 100)) : (parseInt(-(coinvalue * Perc / 100)))) );
@@ -209,6 +209,23 @@ function calculateCoinValue() {
 function RandomData(min, max) {
     return Math.floor(Math.random() * (max - min) + min);
 }
+
+app.post("/getBalance", (req, res) => {
+    if (req.body.Token) {
+        DB.query(`SELECT * FROM userinfo WHERE Toke=${DB.escape(req.body.Token)}`, (err, row) => {
+            if (err) { res.send({msg: "데이터베이스 조회 오류"}); return Log.writeLog(req.body.id, "Error", "데이터베이스 조회 오류" + err, req.headers['x-forwarded-for'] || req.connection.remoteAddress) }
+            if (row.length == 0) row = undefined;
+            else row = row[0];
+            if (row) {
+                res.send({id: row.name, CoinBalance: row.CoinBalance, MoneyBalance: row.MoneyBalance});
+            } else {
+                res.send({msg: "NO_DATA"});
+            }
+        })
+    } else {
+        res.send({msg: "NO_USER"});
+    }
+})
 
 
 app.post("/login", (req, res) => {
