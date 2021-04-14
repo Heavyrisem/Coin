@@ -135,7 +135,7 @@ function calculateCoinValue() {
     let rand = 0;
     // let type;
 
-    let NextDir = (coinvalue <= DefaultCoinValue) ? RandomData(0, 10) : RandomData(0, 2); // true is UP false is DOWN
+    let NextDir = (coinvalue <= DefaultCoinValue) ? RandomData(0, 20) : RandomData(0, 2); // true is UP false is DOWN
     if (coinvalue >= MaximunCoinValue / 2)
         NextDir = (!RandomData(0, 3));
     let Perc = Math.floor(Math.random() * (50 - 3)) + 3; // %
