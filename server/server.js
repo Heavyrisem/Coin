@@ -35,6 +35,7 @@ const UpdateTick = 10000;
 const MinimumCoinValue = 10000;
 const DefaultCoinValue = 180000;
 const MaximunCoinValue = 1000000;
+const CoinResetTerm = 15;
 const Fee = (m) => {
     return parseInt(m - m * 10 / 100); // 10%수수료
 };
@@ -199,11 +200,13 @@ function calculateCoinValue() {
     if (coinvalue <= MinimumCoinValue) coinvalue = MinimumCoinValue;
     coinTick++;
 
-    // DB.query(`SELECT * FROM userinfo WHERE (${DB.query(coinTick)} - LastTrade) >= 25`, (err, rows) => {
+    // DB.query(`select * from userinfo where (SELECT MAX(id) FROM coinValue) - LastTrade >= ${CoinResetTerm}`, (err, rows) => {
     //     if (err) return Log.writeLog("System", "DataBaseERROR", "Error while Getting LastTrade List "+ err, "");
     //     if (rows.length) {
     //         rows.forEach((row, idx) => {
-    //             console.log(row, idx);
+    //             DB.query(`UPDATE userinfo SET MoneyBalance=${DB.escape(parseInt(row.MoneyBalance) + preCal)}, CoinBalance=${DB.escape(parseInt(row.CoinBalance) - parseInt(req.body.Amount))}, LastTrade=${DB.escape(coinTick)} WHERE name=${DB.escape(req.body.id)}`, err => {
+            
+    //             });
     //         })
     //     }
     // })
