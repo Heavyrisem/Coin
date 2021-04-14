@@ -199,14 +199,14 @@ function calculateCoinValue() {
     if (coinvalue <= MinimumCoinValue) coinvalue = MinimumCoinValue;
     coinTick++;
 
-    DB.query(`SELECT * FROM userinfo WHERE (${DB.query(coinTick)} - LastTrade) >= 25`, (err, rows) => {
-        if (err) return Log.writeLog("System", "DataBaseERROR", "Error while Getting LastTrade List "+ err, "");
-        if (rows.length) {
-            rows.forEach((row, idx) => {
-                console.log(row, idx);
-            })
-        }
-    })
+    // DB.query(`SELECT * FROM userinfo WHERE (${DB.query(coinTick)} - LastTrade) >= 25`, (err, rows) => {
+    //     if (err) return Log.writeLog("System", "DataBaseERROR", "Error while Getting LastTrade List "+ err, "");
+    //     if (rows.length) {
+    //         rows.forEach((row, idx) => {
+    //             console.log(row, idx);
+    //         })
+    //     }
+    // })
 
     io.emit("CoinValue", { coinValue: coinvalue, updateTime: `${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`, nextUpdate: UpdateTick });
     DB.query(`INSERT INTO coinValue(value, date) VALUES('${coinvalue}', '${now}')`, (err) => {
