@@ -90,17 +90,17 @@ class Master extends React.Component {
     };
 
     async CheckUserStatus() {
-        if (this.userID == undefined) return;
+        if (this.state.userID == undefined) return;
+        console.log("Check")
         let ServerResponse = await fetch(`${serverAddress}/getBalance`, {
             method: "POST",
             body: JSON.stringify({
-                name: this.state.userID,
                 Token: this.state.userToken
             }),
             headers: {'Context-type': 'application/json'}
         });
         ServerResponse = await ServerResponse.json();
-
+        console.log(ServerResponse)
         if (ServerResponse.CoinBalance != undefined) this.SetBalance(ServerResponse.CoinBalance, ServerResponse.MoneyBalance);
     }
 
@@ -116,7 +116,7 @@ class Master extends React.Component {
             <div className="Master">
                 {(this.state.userID==undefined&&this.state.showLoginPanel)&& <Login show={this.showLoginPanel.bind(this)} hide={this.hideLoginPanel.bind()} onSuccess={this.onLogin.bind(this)} SetBalance={this.SetBalance.bind(this)}/>}
                 <Header showLoginPanel={this.showLoginPanel.bind(this)} hideLoginPanel={this.hideLoginPanel.bind(this)}  userInfo={this.state}/>
-                <Main BotDetection={this.runBotDetection} hideLoginPanel={this.hideLoginPanel.bind(this)} userInfo={this.state} SetBalance={this.SetBalance.bind(this)}/>
+                <Main BotDetection={this.runBotDetection} hideLoginPanel={this.hideLoginPanel.bind(this)} userInfo={this.state} SetBalance={this.SetBalance.bind(this)} CheckUserStatus={this.CheckUserStatus.bind(this)}/>
             </div>
         )
     }

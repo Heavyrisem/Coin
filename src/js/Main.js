@@ -175,6 +175,7 @@ class Main extends React.Component {
     this.state.chartoption.options.scales.yAxes[0].ticks.stepSize = tmp;
     this.state.chart.update();
 	this.state.Refresh = !this.state.Refresh;
+	this.props.CheckUserStatus();
   }
   nextUpdateTimer() {
     if (this.state.nextChartUpdate > 0 && this.state.nextChartUpdate) {
