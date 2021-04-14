@@ -91,16 +91,14 @@ class Master extends React.Component {
 
     async CheckUserStatus() {
         if (this.state.userID == undefined) return;
-        console.log("Check")
         let ServerResponse = await fetch(`${serverAddress}/getBalance`, {
             method: "POST",
             body: JSON.stringify({
                 Token: this.state.userToken
             }),
-            headers: {'Context-type': 'application/json'}
+            headers: {'Content-type': 'application/json'}
         });
         ServerResponse = await ServerResponse.json();
-        console.log(ServerResponse)
         if (ServerResponse.CoinBalance != undefined) this.SetBalance(ServerResponse.CoinBalance, ServerResponse.MoneyBalance);
     }
 
