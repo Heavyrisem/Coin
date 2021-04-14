@@ -100,7 +100,7 @@ class Main extends React.Component {
     this.state.serverSocket.on("CoinValue", (data) => {
       this.pushData(data);
       this.setState({
-        type: data.type,
+        // type: data.type,
         lastCoinValue: data.coinValue
       });
     })
