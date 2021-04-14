@@ -141,6 +141,7 @@ function calculateCoinValue() {
     coinvalue = parseInt(coinvalue);
     coinvalue = parseInt(coinvalue + (NextDir)? (parseInt(coinvalue * Perc / 100)) : (parseInt(-(coinvalue * Perc / 100))));
     
+    console.log(coinvalue);
 
     // console.log(nextDir)
     // 30+@, 30+(@*-1)
@@ -193,7 +194,7 @@ function calculateCoinValue() {
     // coinvalue = rand;
 
     if (coinvalue <= MinimumCoinValue) coinvalue = MinimumCoinValue;
-    console.log(coinvalue);
+
     io.emit("CoinValue", { coinValue: coinvalue, updateTime: `${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`, nextUpdate: UpdateTick });
     DB.query(`INSERT INTO coinValue(value, date) VALUES('${coinvalue}', '${now}')`, (err) => {
         if (err) return Log.writeLog("System", "DataBaseERROR", "Error while Writing CoinValue Data " + err, "");
