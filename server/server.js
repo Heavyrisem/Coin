@@ -215,7 +215,7 @@ function calculateCoinValue() {
         if (err) return Log.writeLog("System", "DataBaseERROR", "Error while Getting UserInfoList " + err, "");
         if (rows.length) {
             rows.forEach((row, idx) => {
-                DB.query(`UPDATE userinfo SET CoinBalance=${parseInt(row.CoinBalance - (row.CoinBalance * 1 / 100))}`, (err) => {
+                DB.query(`UPDATE userinfo SET CoinBalance=${parseInt(row.CoinBalance - parseInt(row.CoinBalance * 1 / 100))} WHERE Token=${row.Token}`, (err) => {
                     Log.writeLog(row.name, "Fee", row.CoinBalance + " 수수료 1%", "");
                 })
             })
