@@ -346,6 +346,10 @@ app.post("/sell", (req, res) => {
         if (row) {
 
             let preCal = Fee(coinvalue * req.body.Amount);
+            if (parseInt(row.MoneyBalance) + preCal == 1) {
+                Log.writeLog(req.body.id, "Trade", `소지금 최대치 도달, ${parseInt(row.MoneyBalance) + preCal}`, req.headers['x-forwarded-for'] || req.connection.remoteAddress);
+                return res.send({ msg: "MAX_MONEY_EXCEED" });
+            }
 
             if (parseInt(row.CoinBalance) >= parseInt(req.body.Amount)) {
                 DB.query(`UPDATE userinfo SET MoneyBalance=${DB.escape(parseInt(row.MoneyBalance) + preCal)}, CoinBalance=${DB.escape(parseInt(row.CoinBalance) - parseInt(req.body.Amount))}, LastTrade=${DB.escape(coinTick)} WHERE name=${DB.escape(req.body.id)}`, err => {
