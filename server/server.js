@@ -204,12 +204,23 @@ function calculateCoinValue() {
     //     if (err) return Log.writeLog("System", "DataBaseERROR", "Error while Getting LastTrade List "+ err, "");
     //     if (rows.length) {
     //         rows.forEach((row, idx) => {
-    //             DB.query(`UPDATE userinfo SET MoneyBalance=${DB.escape(parseInt(row.MoneyBalance) + preCal)}, CoinBalance=${DB.escape(parseInt(row.CoinBalance) - parseInt(req.body.Amount))}, LastTrade=${DB.escape(coinTick)} WHERE name=${DB.escape(req.body.id)}`, err => {
-            
+    //             DB.query(`UPDATE userinfo SET CoinBalance=${DB.escape(parseInt(row.CoinBalance - (row.CoinBalance * 10 / 100)))}, LastTrade=${DB.escape(coinTick)} WHERE name=${DB.escape(req.body.id)}`, err => {
+                    
     //             });
     //         })
     //     }
     // })
+
+    DB.query(`select * form userinfo where CoinBalance >= 10000`, (err, row) => {
+        if (err) return Log.writeLog("System", "DataBaseERROR", "Error while Getting UserInfoList " + err, "");
+        if (rows.length) {
+            rows.forEach((row, idx) => {
+                DB.query(`UPDATE userinfo SET CoinBalance=${parseInt(row.CoinBalance - (row.CoinBalance * 1 / 100))}`, (err) => {
+                    Log.writeLog(row.name, "Fee", row.CoinBalance + " 수수료 1%", "");
+                })
+            })
+        }
+    })
 
     io.emit("CoinValue", { coinValue: coinvalue, updateTime: `${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`, nextUpdate: UpdateTick });
     DB.query(`INSERT INTO coinValue(value, date) VALUES('${coinvalue}', '${now}')`, (err) => {
