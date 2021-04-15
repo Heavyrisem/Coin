@@ -211,7 +211,7 @@ function calculateCoinValue() {
     //     }
     // })
 
-    DB.query(`select * form userinfo where CoinBalance >= 10000`, (err, row) => {
+    DB.query(`select * form userinfo where CoinBalance >= "10000"`, (err, row) => {
         if (err) return Log.writeLog("System", "DataBaseERROR", "Error while Getting UserInfoList " + err, "");
         if (rows.length) {
             rows.forEach((row, idx) => {
