@@ -31,7 +31,7 @@ app.use(express.urlencoded({     // to support URL-encoded bodies
 }));
 
 const PORT = 7800;
-const UpdateTick = 10000;
+const UpdateTick = 7000;
 const MinimumCoinValue = 10000;
 const DefaultCoinValue = 180000;
 const MaximunCoinValue = 1000000;
