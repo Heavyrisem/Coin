@@ -346,7 +346,7 @@ app.post("/sell", (req, res) => {
         if (row) {
 
             let preCal = Fee(coinvalue * req.body.Amount);
-            if (parseInt(row.MoneyBalance) + preCal == 1) {
+            if (parseInt(row.MoneyBalance + preCal) == 1) {
                 Log.writeLog(req.body.id, "Trade", `소지금 최대치 도달, ${parseInt(row.MoneyBalance) + preCal}`, req.headers['x-forwarded-for'] || req.connection.remoteAddress);
                 return res.send({ msg: "MAX_MONEY_EXCEED" });
             }
