@@ -1,4 +1,4 @@
 {
-    "serverAddress": "https://coin.heavyrsiem.xyz",
+    "serverAddress": "http://localhost:7800",
     "version": 9
 }

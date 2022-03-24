@@ -52,7 +52,7 @@ let KeepAliveDB = setInterval(() => {
 
 app.use((req, res, next) => {
     if (!req.url.indexOf("index.html") == -1 || req.url != '/') return next();
-    
+
     if (req.header('User-Agent') != undefined && req.header('User-Agent').indexOf("Headless") != -1) {
         Log.writeLog("System", "BotDetected", req.header('User-Agent'), req.headers['x-forwarded-for'] || req.connection.remoteAddress);
         return res.send("오류가 발생했습니다.");
@@ -63,7 +63,7 @@ app.use((req, res, next) => {
     }
 
     Log.writeLog("System", "MainPage", (req.header('User-Agent')), req.headers['x-forwarded-for'] || req.connection.remoteAddress);
-    fs.readFile(`../build/index.html`, (err, data) => {
+    fs.readFile(`./build/index.html`, (err, data) => {
         if (err) {
             Log.writeLog("System", "CriticalError", "서비스 불가능, index.html 로드중 오류가 발생했습니다." + err);
             return res.send("서버에 치명적인 오류가 발생했습니다.");
@@ -73,7 +73,7 @@ app.use((req, res, next) => {
         }
     })
 })
-app.use(express.static('../build'));
+app.use(express.static('./build'));
 
 
 let ConnectedSocketCounter = 0;
@@ -97,7 +97,7 @@ io.on("connection", client => {
 
     let disconnectTimer;
     let checkVersion = setInterval(() => {
-        
+
         client.emit("version");
         disconnectTimer = setTimeout(() => {
             console.log(client.handshake.address, "Not Responding For asking Version");
@@ -122,7 +122,7 @@ io.on("connection", client => {
         client.emit("refresh")
         client.disconnect();
     })
-    
+
     client.on("disconnect", () => {
         clearInterval(checkVersion);
         clearTimeout(checkVersion);
@@ -140,11 +140,11 @@ function calculateCoinValue() {
     let NextDir = (coinvalue <= DefaultCoinValue) ? RandomData(0, 20) : RandomData(0, 2); // true is UP false is DOWN
     if (coinvalue >= MaximunCoinValue / 2)
         NextDir = (!RandomData(0, 3));
-    let Perc = (coinvalue <= MaximunCoinValue/2)? (Math.floor(Math.random() * (75 - 5)) + 5):(Math.floor(Math.random() * (50 - 3)) + 3); // %
-    console.log((NextDir)? (parseInt(coinvalue * Perc / 100)) : (parseInt(-(coinvalue * Perc / 100))));
+    let Perc = (coinvalue <= MaximunCoinValue / 2) ? (Math.floor(Math.random() * (75 - 5)) + 5) : (Math.floor(Math.random() * (50 - 3)) + 3); // %
+    console.log((NextDir) ? (parseInt(coinvalue * Perc / 100)) : (parseInt(-(coinvalue * Perc / 100))));
     coinvalue = parseInt(coinvalue);
-    coinvalue = parseInt( coinvalue + ((NextDir)? (parseInt(coinvalue * Perc / 100)) : (parseInt(-(coinvalue * Perc / 100)))) );
-    
+    coinvalue = parseInt(coinvalue + ((NextDir) ? (parseInt(coinvalue * Perc / 100)) : (parseInt(-(coinvalue * Perc / 100)))));
+
     console.log(coinvalue, NextDir);
 
     // console.log(nextDir)
@@ -205,7 +205,7 @@ function calculateCoinValue() {
     //     if (rows.length) {
     //         rows.forEach((row, idx) => {
     //             DB.query(`UPDATE userinfo SET CoinBalance=${DB.escape(parseInt(row.CoinBalance - (row.CoinBalance * 10 / 100)))}, LastTrade=${DB.escape(coinTick)} WHERE name=${DB.escape(req.body.id)}`, err => {
-                    
+
     //             });
     //         })
     //     }
@@ -239,17 +239,17 @@ function RandomData(min, max) {
 app.post("/getBalance", (req, res) => {
     if (req.body.Token) {
         DB.query(`SELECT * FROM userinfo WHERE Token=${DB.escape(req.body.Token)}`, (err, row) => {
-            if (err) { res.send({msg: "데이터베이스 조회 오류"}); return Log.writeLog(req.body.id, "Error", "데이터베이스 조회 오류" + err, req.headers['x-forwarded-for'] || req.connection.remoteAddress) }
+            if (err) { res.send({ msg: "데이터베이스 조회 오류" }); return Log.writeLog(req.body.id, "Error", "데이터베이스 조회 오류" + err, req.headers['x-forwarded-for'] || req.connection.remoteAddress) }
             if (row.length == 0) row = undefined;
             else row = row[0];
             if (row) {
-                res.send({id: row.name, CoinBalance: row.CoinBalance, MoneyBalance: row.MoneyBalance});
+                res.send({ id: row.name, CoinBalance: row.CoinBalance, MoneyBalance: row.MoneyBalance });
             } else {
-                res.send({msg: "NO_DATA"});
+                res.send({ msg: "NO_DATA" });
             }
         })
     } else {
-        res.send({msg: "NO_USER"});
+        res.send({ msg: "NO_USER" });
     }
 })
 
